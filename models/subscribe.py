@@ -1,14 +1,18 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, relationship, Enum, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, Enum, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy import func
 from enum import Enum as PyEnum
 
-from src.models.base import Base, ActivityStatus
+from models.base import Base, ActivityStatus
 
 class TargetType(PyEnum):
     MONTHLY = 'MONTHLY'
     YEARLY = 'YEARLY'
 
-class ActivitySubscribeStatus(ActivityStatus):
+class ActivitySubscribeStatus(PyEnum):
+    ACTIVE = 'ACTIVE'
+    BLOCKED = 'BLOCKED'
+    ARCHIVED = 'ARCHIVED'
     DISABLED = 'DISABLED'
     FAILED = 'FAILED'
     PENDING = 'PENDING'

@@ -532,6 +532,9 @@ ___
 }
 ```
 
-[//]: # (## 🏁 How to run)
+## 🏁 How to run
 
+### Run migrations
+
+> alembic upgrade head
 

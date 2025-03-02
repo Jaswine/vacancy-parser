@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, relationship
+from sqlalchemy import Column, Integer, String, DateTime, Enum
+from sqlalchemy.orm import relationship
 from enum import Enum as PyEnum
 from sqlalchemy import func
 
-from src.models.base import Base, AccountStatus
+from models.base import Base, AccountStatus
 
 class AccountType(PyEnum):
     ADMIN = 'ADMIN'

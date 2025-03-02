@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey, relationship, DateTime, String, Boolean
+from sqlalchemy import Column, Integer, ForeignKey, DateTime, String, Boolean
 from sqlalchemy import func
+from sqlalchemy.orm import relationship
 
-from src.models.base import Base
+from models.base import Base
 
 class Filter(Base):
     """

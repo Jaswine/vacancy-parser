@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey, relationship, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
-from src.models.base import Base
+from models.base import Base
 
 class ParsingLog(Base):
     """

@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, relationship, Enum, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, Enum, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
-from src.models.base import Base, ActivityStatus
+from models.base import Base, ActivityStatus
 
 
 class LinkList(Base):
