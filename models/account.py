@@ -1,12 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, relationship
-from src.models.base import Base
+from sqlalchemy import Column, Integer, String, DateTime, Enum
+from sqlalchemy.orm import relationship
 from enum import Enum as PyEnum
 from sqlalchemy import func
 
-class AccountStatus(PyEnum):
-    ACTIVE = 'ACTIVE'
-    BLOCKED = 'BLOCKED'
-    ARCHIVED = 'ARCHIVED'
+from models.base import Base, AccountStatus
 
 class AccountType(PyEnum):
     ADMIN = 'ADMIN'
@@ -26,10 +23,13 @@ class Account(Base):
     account_status = Column(Enum(AccountStatus), default=AccountStatus.ACTIVE)
     account_type = Column(Enum(AccountType), default=AccountType.SIMPLE)
 
-    updated_at = Column(DateTime, server_default=func.now())
+    last_login = Column(DateTime, server_default=func.now())
+    last_active = Column(DateTime, server_default=func.now())
     created_at = Column(DateTime, server_default=func.now())
 
-    link_lists = relationship('LinkList', back_populates='link_list')
+    link_lists = relationship('LinkList', back_populates='account')
+    subscribes = relationship('Subscribe', back_populates='account')
+    parsing_logs = relationship('ParsingLog', back_populates='account')
 
     def __repr__(self) -> str:
         return f'<Account(id={self.id}, username={self.username}, email={self.email}>'
