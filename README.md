@@ -10,7 +10,9 @@ For automatic parsing and filtering of job vacancies from multiple company websi
 
 ![architecture.png](images/architecture.png)
 
-![architecture.png](images/db_architecture.png)
+![db architecture.png](images/db_architecture.png)
+
+![pages architecture.png](images/pages_architecture.png)
 
 ## 📋 Endpoints
 
