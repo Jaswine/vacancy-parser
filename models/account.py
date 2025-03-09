@@ -32,7 +32,7 @@ class Account(Base):
     parsing_logs = relationship('ParsingLog', back_populates='account')
 
     def __repr__(self) -> str:
-        return f'<Account(id={self.id}, username={self.username}, email={self.email}>'
+        return f'<Account(id={self.id}, username={self.username}, email={self.email})>'
 
     def __str__(self) -> str:
         return f'Account(id={self.id}, username={self.username}, email={self.email})'

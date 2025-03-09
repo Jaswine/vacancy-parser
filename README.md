@@ -538,3 +538,6 @@ ___
 
 > alembic upgrade head
 
+### Run application
+
+> uvicorn main:app --reload

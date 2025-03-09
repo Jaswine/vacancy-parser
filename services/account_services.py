@@ -1,63 +1,85 @@
+from select import select
 from typing import Type
 
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from models.account import Account
 from datetime import datetime
 
+from utils.account_utils import is_email_checker
+from utils.password_utils import get_password_hash
 
-def find_all_accounts(db: Session) -> list[Type[Account]]:
+
+async def find_all_accounts(db: AsyncSession) -> list[Type[Account]]:
     """
         Retrieve all accounts from the database.
-        :param db: Session - The database connection
+        :param db: Session - Database connection
         :return: List of Account objects
     """
-    return db.query(Account).all()
+    result = await db.execute(select(Account))
+    return result.scalars().all()
 
-def find_account_by_id(db: Session, account_id: int) -> Type[Account] | None:
+async def find_account_by_id(db: AsyncSession, account_id: int) -> Account | None:
     """
         Retrieve an account by ID from the database.
-        :param db: Session - The database connection
-        :param account_id: int - The ID of the account to retrieve
+        :param db: Session - Database connection
+        :param account_id: int - ID of the account to retrieve
         :return: Account object
     """
     try:
-        return db.query(Account).filter(Account.id == account_id).first()
+        result = await db.execute(select(Account).where(Account.id == account_id))
+        return result.scalars().first()
     except Exception as e:
         print(f"Error retrieving account by ID: {e}")
-        return None
 
-def find_account_by_username(db: Session, username: str) -> Type[Account] | None:
+async def find_account_by_email_or_username(db: AsyncSession, param: str) -> Account | None:
     """
-        Retrieve an account by username from the database.
-        :param db: Session - The database connection
-        :param username: str - The username of the account to retrieve
+        Retrieve an account by email or username from the database.
+        :param db: Session - Database connection
+        :param param: str - Email or Username of the account to retrieve
         :return: Account object
     """
     try:
-        return db.query(Account).filter(Account.username == username).first()
+        if is_email_checker(param):
+            result = await db.execute(select(Account).where(Account.email == param))
+        else:
+            result = await db.execute(select(Account).where(Account.username == param))
+        return result.scalars().first()
     except Exception as e:
         print(f"Error retrieving account by ID: {e}")
-        return None
 
-def sign_in_account(db: Session,
-                    username: str, password: str) -> Type[Account] | None:
+async def create_account(db: AsyncSession, username: str, email: str, password: str) -> Account | None:
     """
-        Sign in an account using the provided username and password.
-        :param db: Session - The database connection
-        :param username: str - The username of the account
-        :param password: str - The password of the account
+        Create a new account
+        :param db: Session - Database connection
+        :param username: str - User's username
+        :param email: str - User's email
+        :param password: str - User's password
+        :return: Account object
     """
     try:
-        account = find_account_by_username(db, username)
-
-        if account and account.verify_password(password):
-            account.last_login = datetime.now()
-            db.commit()
-
-        if account:
-            account.last_login = datetime.now()
-            db.commit()
+        account =  Account(
+            username=username,
+            email=email,
+            password=get_password_hash(password),
+        )
+        db.add(account)
+        await db.commit()
+        await db.refresh(account)
         return account
     except Exception as e:
-        print(f"Error signing in account: {e}")
-        return None
+        await db.rollback()
+        print(f"Error creating account: {e}")
+
+async def change_account_last_login_date_time(db: AsyncSession, account: Account) -> None:
+    """
+        Change account last_login date time
+        :param db: Session - Database connection
+        :param account: Account - Account
+    """
+    try:
+        account.last_login = datetime.now()
+        await db.commit()
+        await db.refresh(account)
+    except Exception as e:
+        await db.rollback()
+        print(f"Error updating last login field account: {e}")
