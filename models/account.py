@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from enum import Enum as PyEnum
 from sqlalchemy import func
 
-from models.base import Base, AccountStatus
+from models.base import AccountStatus
+from configs.database_config import base as Base
 
 class AccountType(PyEnum):
     ADMIN = 'ADMIN'

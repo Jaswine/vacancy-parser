@@ -3,7 +3,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import func
 from enum import Enum as PyEnum
 
-from models.base import Base, ActivityStatus
+from models.base import ActivityStatus
+from configs.database_config import base as Base
 
 class TargetType(PyEnum):
     MONTHLY = 'MONTHLY'
@@ -26,7 +27,6 @@ class Subscribe(Base):
     __tablename__ = 'subscribes'
 
     id = Column(Integer, primary_key=True, index=True)
-    account_id = Column(Integer, ForeignKey('accounts.id'))
     name = Column(String(255), nullable=False)
     target_type = Column(Enum(TargetType), default=TargetType.MONTHLY)
     activity_status = Column(Enum(ActivityStatus), default=ActivitySubscribeStatus.PENDING)
@@ -35,7 +35,8 @@ class Subscribe(Base):
     created_at = Column(DateTime, server_default=func.now())
     last_activity = Column(DateTime, server_default=func.now())
 
-    account = relationship('Account', back_populates='accounts', foreign_keys=[account_id])
+    account_id = Column(Integer, ForeignKey('accounts.id'))
+    account = relationship('Account', back_populates='subscribes', foreign_keys=[account_id])
 
     def __repr__(self) -> str:
         return (f'<Subscribe(id={self.id}, account_id={self.account_id}, name={self.name}, '

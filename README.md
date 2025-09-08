@@ -12,8 +12,6 @@ For automatic parsing and filtering of job vacancies from multiple company websi
 
 ![db architecture.png](images/db_architecture.png)
 
-![pages architecture.png](images/pages_architecture.png)
-
 ## 📋 Endpoints
 
 ## 🔐 Authentication Endpoints
@@ -534,7 +532,13 @@ ___
 
 ## 🏁 How to run
 
+> uvicorn main:app --reload
+
 ### Run migrations
+
+> alembic init alembic
+
+> alembic revision --autogenerate -m "create accounts table"
 
 > alembic upgrade head
 

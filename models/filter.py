@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime, String, Boolean
 from sqlalchemy import func
 from sqlalchemy.orm import relationship
 
-from models.base import Base
+from configs.database_config import base as Base
 
 class Filter(Base):
     """
@@ -11,8 +11,6 @@ class Filter(Base):
     __tablename__ = 'filters'
 
     id = Column(Integer, primary_key=True, index=True)
-    link_list_id = Column(Integer, ForeignKey('link_lists.id'), index=True)
-
     title = Column(String(255), default='', nullable=True)
     skills = Column(String(255), default='', nullable=True)
     match_of_skills = Column(Boolean, default=False)
@@ -29,6 +27,7 @@ class Filter(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now())
 
+    link_list_id = Column(Integer, ForeignKey('link_lists.id'), index=True)
     link_list = relationship('LinkList', back_populates='filters', foreign_keys=[link_list_id])
 
     def __repr__(self) -> str:

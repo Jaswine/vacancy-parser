@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
-from models.base import Base
+from configs.database_config import base as Base
 
 class ParsingLog(Base):
     """
@@ -11,15 +11,16 @@ class ParsingLog(Base):
     __tablename__ = 'parsing_logs'
 
     id = Column(Integer, primary_key=True, index=True)
-    account_id = Column(Integer, ForeignKey('accounts.id'))
-    link_list_id = Column(Integer, ForeignKey('link_lists.id'))
 
     start_time = Column(DateTime, server_default=func.now())
     end_time = Column(DateTime, server_default=func.now())
     jobs_found = Column(Integer, default=0, nullable=True)
     errors = Column(Integer, default=0, nullable=True)
 
+    account_id = Column(Integer, ForeignKey('accounts.id'))
     account = relationship('Account', back_populates='parsing_logs', foreign_keys=[account_id])
+
+    link_list_id = Column(Integer, ForeignKey('link_lists.id'))
     link_list = relationship('LinkList', back_populates='parsing_logs', foreign_keys=[link_list_id])
 
     def __repr__(self) -> str:
