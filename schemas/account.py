@@ -15,10 +15,17 @@ class AccountLoginData(AccountEmail):
 class AccountRegistrationData(AccountLoginData):
     username: str
 
-class AccountResponse(AccountRegistrationData):
+class AccountResponse(AccountEmail):
+    username: str
+
     last_login: Optional[date]
     last_active: Optional[date]
+
     link_lists: List[LinkListBase] = []
 
     class Config:
         orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

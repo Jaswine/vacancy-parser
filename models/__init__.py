@@ -1,4 +1,3 @@
-# models/__init__.py
 from .account import Account
 from .link_list import LinkList
 from .link import Link

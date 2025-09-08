@@ -3,7 +3,6 @@ from typing import Any, AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine
-import os
 
 # PostgreSQL
 # DATABASE_URL = "postgresql+asyncpg://vacancy_parser:vacancy_parser@localhost:5432/vacancy_parser"

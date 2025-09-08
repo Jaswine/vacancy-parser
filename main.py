@@ -2,13 +2,6 @@ from fastapi import FastAPI
 from configs.database_config import async_engine, base
 from routes import account_routes
 
-from models.account import Account
-from models.filter import Filter
-from models.link import Link
-from models.link_list import LinkList
-from models.parsing_log import ParsingLog
-from models.subscribe import Subscribe
-
 app = FastAPI(
     title='Vacancy parser',
     version='1.0.0'
