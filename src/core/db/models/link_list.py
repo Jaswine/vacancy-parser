@@ -1,12 +1,11 @@
 from sqlalchemy import Column, Integer, ForeignKey, String, Enum, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy import func
 
-from models.base import ActivityStatus
-from configs.database_config import base as Base
+from src.core.db.enums.status import Status
+from src.core.db.models.base import BaseModel
 
 
-class LinkList(Base):
+class LinkList(BaseModel):
     """
         LinkList model
     """
@@ -14,10 +13,7 @@ class LinkList(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
-    activity_status = Column(Enum(ActivityStatus), default=ActivityStatus.ACTIVE)
-
-    updated_at = Column(DateTime, server_default=func.now())
-    created_at = Column(DateTime, server_default=func.now())
+    activity_status = Column(Enum(Status), default=Status.ACTIVE)
 
     account_id = Column(Integer, ForeignKey("accounts.id"))
     account = relationship('Account', back_populates='link_lists', foreign_keys=[account_id])

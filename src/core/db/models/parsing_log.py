@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
-from configs.database_config import base as Base
+from src.core.db.models.base import BaseModel
 
-class ParsingLog(Base):
+
+class ParsingLog(BaseModel):
     """
         Parsing Logs model
     """

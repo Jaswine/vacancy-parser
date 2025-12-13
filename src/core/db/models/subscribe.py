@@ -1,26 +1,13 @@
 from sqlalchemy import Column, Integer, ForeignKey, String, Enum, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
-from enum import Enum as PyEnum
 
-from models.base import ActivityStatus
-from configs.database_config import base as Base
-
-class TargetType(PyEnum):
-    MONTHLY = 'MONTHLY'
-    YEARLY = 'YEARLY'
-
-class ActivitySubscribeStatus(PyEnum):
-    ACTIVE = 'ACTIVE'
-    BLOCKED = 'BLOCKED'
-    ARCHIVED = 'ARCHIVED'
-    DISABLED = 'DISABLED'
-    FAILED = 'FAILED'
-    PENDING = 'PENDING'
-    SUSPENDED = 'SUSPENDED'
+from src.core.db.enums.subscribe_status import ActivitySubscribeStatus
+from src.core.db.enums.subscribe_target_type import TargetType
+from src.core.db.models.base import BaseModel
 
 
-class Subscribe(Base):
+class Subscribe(BaseModel):
     """
         Subscribe model
     """
@@ -28,12 +15,9 @@ class Subscribe(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
-    target_type = Column(Enum(TargetType), default=TargetType.MONTHLY)
-    activity_status = Column(Enum(ActivityStatus), default=ActivitySubscribeStatus.PENDING)
-
+    target_type = Column(Enum(TargetType), default=TargetType.MONTHLY, nullable=True)
+    activity_status = Column(Enum(ActivitySubscribeStatus), nullable=True)
     end_at = Column(DateTime, server_default=func.now())
-    created_at = Column(DateTime, server_default=func.now())
-    last_activity = Column(DateTime, server_default=func.now())
 
     account_id = Column(Integer, ForeignKey('accounts.id'))
     account = relationship('Account', back_populates='subscribes', foreign_keys=[account_id])

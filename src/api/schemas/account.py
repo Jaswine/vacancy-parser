@@ -3,7 +3,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel
 
-from schemas.link_list import LinkListBase
+from src.api.schemas.link_list import LinkListBase
 
 
 class AccountEmail(BaseModel):
