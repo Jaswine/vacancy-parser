@@ -8,9 +8,9 @@ For automatic parsing and filtering of job vacancies from multiple company websi
 
 ## 🗃️ Architecture
 
-![architecture.png](docs/images/architecture.png)
+![architecture.png](docs/architecture_images/architecture.png)
 
-![db architecture.png](docs/images/db_architecture.png)
+![db architecture.png](docs/architecture_images/db_architecture.png)
 
 ## 📋 Endpoints
 
@@ -538,7 +538,7 @@ ___
 
 > alembic init alembic
 
-> alembic revision --autogenerate -m "create accounts table"
+> alembic revision --autogenerate -m "create tables"
 
 > alembic upgrade head
 

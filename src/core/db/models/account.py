@@ -4,10 +4,10 @@ from sqlalchemy import func
 
 from src.core.db.enums.status import Status
 from src.core.db.enums.account_type import AccountType
-from src.core.db.models.base import BaseModel
+from src.core.db.models.base import Base
 
 
-class Account(BaseModel):
+class Account(Base):
     """
         Account model
     """

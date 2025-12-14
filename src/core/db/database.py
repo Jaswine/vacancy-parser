@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase
 
 from src.core.configs.config import settings
-
+from src.core.db.models.base import Base
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,6 @@ async_session_local = sessionmaker(
 
 # sync engine (для Alembic)
 # sync_engine = create_engine(settings.DATABASE_URL.replace("aiosqlite", "pysqlite"), echo=True, future=True)
-
-Base = declarative_base()
 
 async def init_db():
     async with engine.begin() as conn:

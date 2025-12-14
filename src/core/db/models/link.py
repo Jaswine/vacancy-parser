@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, ForeignKey, String, Enum, DateTime
 from sqlalchemy.orm import relationship
 
 from src.core.db.enums.status import Status
-from src.core.db.models.base import BaseModel
+from src.core.db.models.base import Base
 
 
-class Link(BaseModel):
+class Link(Base):
     """
         Link model
     """

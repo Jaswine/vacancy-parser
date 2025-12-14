@@ -4,10 +4,10 @@ from sqlalchemy import func
 
 from src.core.db.enums.subscribe_status import ActivitySubscribeStatus
 from src.core.db.enums.subscribe_target_type import TargetType
-from src.core.db.models.base import BaseModel
+from src.core.db.models.base import Base
 
 
-class Subscribe(BaseModel):
+class Subscribe(Base):
     """
         Subscribe model
     """

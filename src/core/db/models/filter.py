@@ -5,10 +5,10 @@ from src.core.db.enums.filter_employment_type import FilterEmploymentType
 from src.core.db.enums.filter_experience_level import FilterExperienceLevel
 from src.core.db.enums.filter_work_type import FilterWorkType
 from src.core.db.enums.status import Status
-from src.core.db.models.base import BaseModel
+from src.core.db.models.base import Base
 
 
-class Filter(BaseModel):
+class Filter(Base):
     """
         Filter model
     """

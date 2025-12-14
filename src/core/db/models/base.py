@@ -9,13 +9,13 @@ from datetime import datetime
 from typing import Any
 
 
-class BaseModel(DeclarativeBase):
+class Base(DeclarativeBase):
     __abstract__ = True
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
-        default=uuid.uuid7,
+        default=uuid.uuid4(),
         nullable=False,
         index=True,
     )
