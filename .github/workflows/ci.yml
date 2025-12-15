@@ -38,11 +38,11 @@ jobs:
 
       - name: Run formatters and linters
         run: |
-          uv run ruff format --check .
-          uv run ruff check .
+          python3 ruff format --check .
+          python3 run ruff check .
 
       - name: Run mypy type checker
-        run: uv run mypy src/
+        run: python3 run mypy src/
 
       - name: Run tests
         run: pytest tests/
