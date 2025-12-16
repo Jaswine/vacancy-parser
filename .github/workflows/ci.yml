@@ -44,6 +44,3 @@ jobs:
 
       - name: Run mypy type checker
         run: python3 -m mypy src/
-
-      - name: Run tests
-#        run: pytest tests/
