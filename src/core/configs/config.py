@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     # Redis
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
-    REDIS_PASSWORD: SecretStr | None = None  # если требуется пароль
-    REDIS_DB: int = 0  # номер базы
+    REDIS_PASSWORD: SecretStr | None = None
+    REDIS_DB: int = 0  # db number
 
     # JWT
     ALGORITHM: str = "HS256"
@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore
 
 
 settings = get_settings()
