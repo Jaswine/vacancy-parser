@@ -1,0 +1,17 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: python src/api/main.py
+    env_file:
+      - ../.env
+    volumes:
+      - ../src:/app/src
+    restart: unless-stopped
+    container_name: vacancy-parser-api
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
