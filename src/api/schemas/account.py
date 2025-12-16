@@ -9,11 +9,14 @@ from src.api.schemas.link_list import LinkListBase
 class AccountEmail(BaseModel):
     email: str
 
+
 class AccountLoginData(AccountEmail):
     password: str
 
+
 class AccountRegistrationData(AccountLoginData):
     username: str
+
 
 class AccountResponse(AccountEmail):
     username: str
@@ -25,6 +28,7 @@ class AccountResponse(AccountEmail):
 
     class Config:
         orm_mode = True
+
 
 class Token(BaseModel):
     access_token: str

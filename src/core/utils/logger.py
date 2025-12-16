@@ -1,4 +1,3 @@
-
 import logging
 
 from src.core.configs.config import settings
