@@ -2,16 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.configs.config import get_db
 from src.api.schemas.account import AccountRegistrationData, Token, AccountLoginData
+from src.core.db.database import get_db
 from src.core.db.models import Account
 from src.api.utils.security import hash_password, create_access_token, verify_password
 
 router = APIRouter()
 
+
 # Registration
 @router.post("/registration/")
-async def registration(user: AccountRegistrationData, db: AsyncSession = Depends(get_db)):
+async def registration(
+    user: AccountRegistrationData, db: AsyncSession = Depends(get_db)
+):
     # Check if email exists
     result = await db.execute(select(Account).filter(Account.email == user.email))
     existing = result.scalars().first()
@@ -31,6 +34,7 @@ async def registration(user: AccountRegistrationData, db: AsyncSession = Depends
     # Return JWT
     token = create_access_token({"sub": str(new_account.id)})
     return Token(access_token=token)
+
 
 # Login
 @router.post("/login/", response_model=Token)
