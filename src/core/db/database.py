@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 engine: AsyncEngine = create_async_engine(
-    settings.DATABASE_URL,
+    settings.DATABASE_URL.get_secret_value(),
     echo=True,  # Dev
     future=True,
     pool_pre_ping=True,
