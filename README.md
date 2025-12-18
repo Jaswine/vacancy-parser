@@ -536,9 +536,15 @@ ___
 
 ### Run migrations
 
+Local
+
 > alembic init alembic
 
 > alembic revision --autogenerate -m "create tables"
 
 > alembic upgrade head
+
+Docker
+
+> docker compose -f infrastructure/docker-compose.yml up
 

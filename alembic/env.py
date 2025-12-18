@@ -12,7 +12,7 @@ from src.core.db.models.base import Base
 
 # Alembic Config object
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.get_secret_value())
 
 # Set up logging
 if config.config_file_name is not None:
@@ -33,7 +33,7 @@ async def run_async_migrations():
     """
     Create async migrations
     """
-    engine = create_async_engine(settings.DATABASE_URL)
+    engine = create_async_engine(settings.DATABASE_URL.get_secret_value())
     async with engine.begin() as connection:
         await connection.run_sync(do_run_migrations)
     await engine.dispose()
