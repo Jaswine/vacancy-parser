@@ -27,7 +27,7 @@ from a corporate website.
 - company_name: string
   Company
 
-- skills: text
+- skills: [string]
   Skills (Python, Django, Java, Pytest, Grafana)
 
 - location: string | null
@@ -56,7 +56,7 @@ from a corporate website.
   whether the user has viewed the vacancy
 
 - posted_at: datetime | null
-- scraped_at: 
+- scraped_at: datetime | null
 ```
 
 ## Normalization Rules
