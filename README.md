@@ -8,7 +8,7 @@ For automatic parsing and filtering of job vacancies from multiple company websi
 
 ![architecture.png](docs/architecture_images/architecture.png)
 
-![db architecture.png](docs/architecture_images/db_architecture.png)
+![db architecture.png](docs/architecture_images/db_architecture_old_1.png)
 
 **Tech Stack:**
 - Python 3.11+
@@ -202,16 +202,16 @@ All commands are executed via `make`:
 
 #### Required Variables
 
-| Variable | Description                     | Example (Local)                                           | Example (Production) |
-|----------|---------------------------------|-----------------------------------------------------------|---------------------|
-| `DATABASE_URL` | Database url                    | `postgresql+asyncpg://test_user:test@localhost:5432/test` | `...`               |
+| Variable        | Description     | Example (Local)                                             | Example (Production) |
+|-----------------|-----------------|-------------------------------------------------------------|------------|
+| `DATABASE_URL`  | Database url    | `postgresql+asyncpg://test_user:test@localhost:5432/test`   | `...`               |
 
 #### Optional Variables (with defaults)
 
-| Variable | Description                                        | Default Value |
-|----------|----------------------------------------------------|---------------|
-| `JWT_SECRET_KEY`       | JWT secret key                                       | `Some Key`    |
-| `LOG_LEVEL` | Logging level                                      | `INFO`        |
+| Variable          | Description             | Default Value |
+|-------------------|-------------------------|---------------|
+| `JWT_SECRET_KEY`  | JWT secret key          | `Some Key`    |
+| `LOG_LEVEL`       | Logging level           | `INFO`        |
 
 [//]: # (## 📚 Documentation)
 

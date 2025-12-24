@@ -20,6 +20,8 @@ from corporate websites without manual configuration for each source.
 4. The data is normalized to a single model
 5. The results are saved and made available via API
 
+![work_process.png](architecture_images/work_process.png)
+
 ## Capabilities
 
 - Parsing job vacancies from arbitrary websites

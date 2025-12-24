@@ -30,10 +30,6 @@ async_session_local = async_sessionmaker(
     autoflush=False,
 )
 
-# sync engine (для Alembic)
-# sync_engine = create_engine(settings.DATABASE_URL.replace("aiosqlite", "pysqlite"), echo=True, future=True)
-
-
 async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
