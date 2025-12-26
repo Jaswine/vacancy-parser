@@ -91,6 +91,27 @@ Creating a job for parsing, taking vacancies after parsing, creating links and l
 - txt
 - xlsx
 
+**Filters**
+
+- title: `Python Developer`
+- company_name: `ACME`
+- skills: `Python`, `Django` 
+- location: `New York`
+- salary_min: `1000`
+- salary_max: `3000`
+- currency: `USD`
+- employment_type: `Full Time`, `Part Time`
+- work_format: `Remote`, `On-site`
+- experience_level: `Middle`, `Senior`
+- active_status: `Watched`, `Active`, `Closed`
+- posted_from / posted_to: `2025-12-01T00:00:00Z`
+
+**Sorting**
+
+- sort_by: `posted_at`, `salary`, `title`, `company_name`, 
+`experience_level`, `work_format`, `employment_type`, `active_status`
+- order: `asc`, `desc`
+
 #### Response
 
 ```json

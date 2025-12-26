@@ -20,13 +20,24 @@ Subscription types:
 
 #### Request
 
-`GET /api/subscraptions/`
+`GET /api/subscraptions?min_links_per_hour=30&sort_by=price&order=asc`
+
+**Filters**
+
+- min_links_per_hour  - Filter by min links per hour;
+- max_links_per_hour  - Filter by max links per hour;
+- amount_from / amount_to - Filter by amount;
+
+**Sorting**
+
+- sort_by: `price`, `links_per_hour`, `name`, `created_at`;
+- order: `asc`, `desc`;
 
 #### Response
 
 ```json
 {
-  "subscriptions": [
+  "data": [
     {
       "id": 1,  
       "name": "Free",
@@ -58,7 +69,8 @@ Subscription types:
   "price": 0.0,
   "currency": "USD",
   "description": "Basic rate, up to 20 links/hour",
-  "features": [""]
+  "features": ["history_7_days", 
+        "export_to_csv", "export_to_xls", "export_to_txt"]
 }
 ```
 
@@ -110,13 +122,33 @@ Invoices statuses:
 
 #### Request
 
-`GET /api/invoices/`
+`GET /api/invoices?subscription_name=Pro&sort_by=price&order=asc&page=1&limit=20`
+
+- page 
+- limit
+
+**Filters**
+
+- subscription_name: `Pro`, `Free`... - Filter by subscription name;
+- status: `pending`, `success`, `failed`, `refunded` - Filter by status;
+- amount_from / amount_to - Filter by amount;
+- status - Filter by status;
+- created_at / paid_at: `2025-12-01` - Filtering by time;
+
+**Sorting**
+
+- sort_by: `amount`, `subscription_name`, `status`, `created_at`, `paid_at`, `expires_at`;
+- order: `asc`, `desc`;
 
 #### Response
 
 ```json
 {
-  "invoices": [
+  "page": 1,
+  "page_size": 20,
+  "total_pages": 15,
+  "total_items": 150,
+  "data": [
     {
       "id": 102,
       "subscription_name": "Pro",
@@ -200,13 +232,33 @@ Invoices statuses:
 
 #### Request
 
-`GET /api/transactions/`
+`GET /api/transactions/?status=success,refunded&page=1&limit=20`
+
+- page 
+- limit
+
+**Filter** 
+
+- status: `pending`, `success`, `failed`, `refunded` - Filter by status;
+- provider: `stripe` - Filter by provider;
+- subscription_name: `Pro`, `Free` - Filter by subscription name;
+- created_at / paid_at: `2025-12-01` - Filtering by time;
+- amount_from / amount_to - Filter by amount;
+
+**Sorting**
+
+- sort_by: `created_at`, `paid_at`, `amount`, `status`, `provider`, `subscription_name`;
+- order: `asc`, `desc`;
 
 #### Response
 
 ```json
 {
-  "transactions": [
+  "page": 1,
+  "page_size": 20,
+  "total_pages": 15,
+  "total_items": 150,
+  "data": [
     {
       "id": 301,
       "invoice_id": 101,
@@ -295,7 +347,11 @@ Invoices statuses:
 ```json
 {
   "id": 301,
-  "invoice_id": 101,
+  "account":  {
+    "id": 1, 
+    "username": "alex",
+    "email": "user@example.com"
+  },
   "subscription_name": "Pro",
   "amount": 9.99,
   "currency": "USD",
@@ -304,6 +360,7 @@ Invoices statuses:
   "provider_tx_id": "txn_abc123",
   "created_at": "2025-12-24T15:05:00Z",
   "paid_at": null,
+  "invoice_id": 101,
   "invoice": {
     "id": 101,
     "period_start": "2025-12-24T15:05:00Z",
@@ -311,10 +368,6 @@ Invoices statuses:
     "status": "paid",
     "amount": 9.99,
     "currency": "USD"
-  },
-  "user": {
-    "id": 1,
-    "email": "user@example.com"
   }
 }
 

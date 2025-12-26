@@ -6,7 +6,11 @@
 
 #### Request
 
-`GET /api/admin/accounts/`
+`GET /api/admin/accounts?is_active=true`
+
+**Filters**
+
+- is_active: `true`, `false` - Show only **available** accounts;
 
 #### Response
 
