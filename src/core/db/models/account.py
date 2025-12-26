@@ -35,7 +35,7 @@ class Account(Base):
     )
 
     link_lists = relationship("LinkList", back_populates="account")
-    subscribes = relationship("Subscribe", back_populates="account")
+    subscriptions = relationship("Subscribe", back_populates="account")
     parsing_logs = relationship("ParsingLog", back_populates="account")
 
     def __repr__(self) -> str:
