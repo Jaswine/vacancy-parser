@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, ForeignKey, String, Enum
+from sqlalchemy import String, Enum
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from src.core.db.enums.status import Status
@@ -12,25 +12,21 @@ class Link(Base):
 
     __tablename__ = "links"
 
-    company_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     url: Mapped[str] = mapped_column(String(1500), nullable=False, index=True)
-    activity_status: Mapped[Status] = mapped_column(
+    status: Mapped[Status] = mapped_column(
         Enum(Status), default=Status.ACTIVE, nullable=False
     )
 
-    link_list_id: Mapped[int] = mapped_column(Integer, ForeignKey("link_lists.id"))
-    link_list = relationship(
-        "LinkList", back_populates="links", foreign_keys=[link_list_id]
+    collection_links = relationship(
+        "CollectionLink", back_populates="link", cascade="all, delete-orphan"
+    )
+
+    collections = relationship(
+        "Collection", secondary="collection_links", back_populates="links"
     )
 
     def __repr__(self) -> str:
-        return (
-            f"<Link(id={self.id}, link_list_id={self.link_list_id}, "
-            f"company_name={self.company_name}, url={self.url})>"
-        )
+        return f"<Link(url={self.url})>"
 
     def __str__(self) -> str:
-        return (
-            f"Link(id={self.id}, link_list_id={self.link_list_id}, "
-            f"company_name={self.company_name}, url={self.url})>"
-        )
+        return f"Link(url={self.url})>"

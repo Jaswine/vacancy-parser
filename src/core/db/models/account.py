@@ -18,7 +18,7 @@ class Account(Base):
 
     username: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
     account_status: Mapped[Status] = mapped_column(
         Enum(Status), default=Status.ACTIVE, nullable=False
@@ -34,9 +34,17 @@ class Account(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=True
     )
 
-    link_lists = relationship("LinkList", back_populates="account")
-    subscriptions = relationship("Subscribe", back_populates="account")
-    parsing_logs = relationship("ParsingLog", back_populates="account")
+    collections = relationship("Collection", back_populates="account")
+    parsing_runs = relationship("ParsingRun", back_populates="account")
+
+    subscriptions = relationship("AccountSubscription", back_populates="account")
+
+    invoices = relationship("Invoice", back_populates="account")
+    transactions = relationship("Transaction", back_populates="account")
+
+    account_subscriptions = relationship(
+        "AccountSubscription", back_populates="account"
+    )
 
     def __repr__(self) -> str:
         return f"<Account(id={self.id}, username={self.username}, email={self.email}>"

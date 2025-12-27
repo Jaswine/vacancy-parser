@@ -41,10 +41,18 @@ db-init: ## Initialize alembic (only first time)
 	alembic init alembic
 	@echo "✅  Alembic initialized. Don't forget to edit alembic.ini and env.py!"
 
+db-head: ## Bring Alembic up to the latest migration (head) without applying
+	uv run alembic stamp head
+
+db-current: ## Show current database migration version
+	uv run alembic current
+
 db-migrate: ## Create new migration based on models (requires message, e.g. make db-migrate m="init")
-	@if [ -z "$(m)" ]; then echo "❌ Error: Use 'make db-migrate m=\"your_message\"'"; exit 1; fi
+	@if [ -z "$(name)" ]; then echo "❌ Error: Use 'make db-migrate m=\"your_message\"'"; exit 1; fi
 	@echo "🔄  Generating new migration..."
-    @bash -c 'set -a; source .env; set +a; PYTHONPATH=src uv run alembic revision --autogenerate -m "$(m)"'
+	uv run alembic stamp head
+	uv run alembic current
+	@bash -c 'set -a; source .env; set +a; PYTHONPATH=src uv run alembic revision --autogenerate -m "$(name)"'
 	@echo "✅  Migration created."
 
 db-upgrade: ## Apply all migrations to the database

@@ -105,7 +105,7 @@ Creating a job for parsing, taking vacancies after parsing, creating links and l
 - experience_level: `Middle`, `Senior`
 - active_status: `Watched`, `Active`, `Closed`
 - posted_from / posted_to: `2025-12-01T00:00:00Z`
-
+    
 **Sorting**
 
 - sort_by: `posted_at`, `salary`, `title`, `company_name`, 

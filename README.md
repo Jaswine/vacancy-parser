@@ -51,8 +51,12 @@ cp .env.example .env
 Fill in the values:
 
 ```bash
-# Database
-DATABASE_URL=postgresql+asyncpg://vacancy_parser:vacancy_parser@localhost:5432/vacancy_parser
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=vacancy_parser
+DB_PASSWORD=vacancy_parser
+DB_NAME=vacancy_parser
 
 # Application
 JWT_SECRET_KEY=Some_Secret_Key
@@ -94,17 +98,16 @@ cp .env.example .env
 Fill in the values:
 
 ```bash
-# Database
-DATABASE_URL=DATABASE_URL=postgresql+asyncpg://vacancy_parser:vacancy_parser@db:5432/vacancy_parser
+# PostgreSQL 
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=vacancy_parser
+DB_PASSWORD=vacancy_parser
+DB_NAME=vacancy_parser
 
 # Application
 JWT_SECRET_KEY=Some_Secret_Key
 LOG_LEVEL=INFO
-
-# Database creation data
-DB_USER=vacancy_parser
-DB_PASSWORD=vacancy_parser
-DB_NAME=vacancy_parser
 ```
 
 #### 3. Run
@@ -202,9 +205,13 @@ All commands are executed via `make`:
 
 #### Required Variables
 
-| Variable        | Description     | Example (Local)                                             | Example (Production) |
-|-----------------|-----------------|-------------------------------------------------------------|------------|
-| `DATABASE_URL`  | Database url    | `postgresql+asyncpg://test_user:test@localhost:5432/test`   | `...`               |
+| Variable      | Description         | Example (Local)   | Example (Prod) |
+|---------------|---------------------|-------------------|----------------|
+| `DB_HOST`     | Database host       | `localhost`       | `...`          |
+| `DB_PORT`     | Database port       | `5432`            | `...`          |
+| `DB_USER`     | Database user       | `vacancy_parser`  | `...`          |
+| `DB_PASSWORD` | Database password   | `vacancy_parser`  | `...`          |
+| `DB_NAME`     | Database name       | `vacancy_parser`  | `...`          |
 
 #### Optional Variables (with defaults)
 

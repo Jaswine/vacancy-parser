@@ -228,6 +228,20 @@ Invoices statuses:
 
 ## Transaction Endpoints
 
+Transaction statuses:
+
+| Name             | Description                                                             | 
+|------------------|-------------------------------------------------------------------------|
+| pending          | Backend added **expires_at** and **payment_link** for the invoice       | 
+| processing       | Payment has been accepted, but is still being processed by the provider | 
+| success          | The customer paid for the invoice successfully                          | 
+| failed           | The transaction was not successful                                      | 
+| refunded         | The amount was refunded                                                 |
+| canceled         | Payment canceled by user or system                                      |
+| expired          | Invoice / payment link has expired                                      |
+| chargeback       | The client disputed the payment (refund through the bank)               |
+| error            | Internal error processing payment                                       |
+
 ### Find all transactions
 
 #### Request

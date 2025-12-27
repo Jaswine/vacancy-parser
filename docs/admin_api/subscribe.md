@@ -149,7 +149,7 @@ Subscription types:
 ```
 
 ### Create a user subscription 
-
+    
 #### Request
 
 `POST /api/user-subscriptions/`

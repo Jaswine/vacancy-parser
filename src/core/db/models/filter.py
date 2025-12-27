@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Integer, ForeignKey, DateTime, String, Boolean, Enum
+from sqlalchemy.dialects.postgresql.base import UUID
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from src.core.db.enums.filter_employment_type import FilterEmploymentType
@@ -17,14 +18,18 @@ class Filter(Base):
 
     __tablename__ = "filters"
 
+    collection_id: Mapped[int | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("collections.id"), index=True
+    )
+
     title: Mapped[str | None] = mapped_column(String(255), default="", nullable=True)
     skills: Mapped[str | None] = mapped_column(String(255), default="", nullable=True)
-    match_of_skills: Mapped[bool | None] = mapped_column(
+    complete_match_of_skills: Mapped[bool | None] = mapped_column(
         Boolean, default=False, nullable=True
     )
     location: Mapped[str | None] = mapped_column(String(255), default="", nullable=True)
 
-    work_type: Mapped[FilterWorkType | None] = mapped_column(
+    work_format: Mapped[FilterWorkType | None] = mapped_column(
         Enum(FilterWorkType), default=FilterWorkType.OFFICE, nullable=True
     )  # Office, Hybrid, Remote, etc.
 
@@ -53,16 +58,18 @@ class Filter(Base):
         DateTime, default=None, nullable=True
     )  # When it's public
 
-    link_list_id: Mapped[int | None] = mapped_column(
-        Integer, ForeignKey("link_lists.id"), index=True
-    )
-
-    link_list = relationship(
-        "LinkList", back_populates="filters", foreign_keys=[link_list_id]
+    collection = relationship(
+        "Collection", back_populates="filters", foreign_keys=[collection_id]
     )
 
     def __repr__(self) -> str:
-        return f"<Filter(id={self.id}, title={self.title}, link_list_id={self.link_list_id})>"
+        return (
+            f"<Filter(id={self.id}, title={self.title}, "
+            f"collection_id={self.collection_id})>"
+        )
 
     def __str__(self) -> str:
-        return f"Filter(id={self.id}, title={self.title}, link_list_id={self.link_list_id})"
+        return (
+            f"Filter(id={self.id}, title={self.title}, "
+            f"collection_id={self.collection_id})"
+        )
