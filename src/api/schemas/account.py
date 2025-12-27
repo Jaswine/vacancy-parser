@@ -24,7 +24,7 @@ class AccountResponse(AccountEmail):
     last_login: Optional[date]
     last_active: Optional[date]
 
-    link_lists: List[LinkListBase] = []
+    collections: List[LinkListBase] = []
 
     class Config:
         orm_mode = True

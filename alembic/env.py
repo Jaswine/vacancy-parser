@@ -1,9 +1,7 @@
-import asyncio
-
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy import create_engine
 
 from src.core.configs.config import settings
 
@@ -12,7 +10,7 @@ from src.core.db.models.base import Base
 
 # Alembic Config object
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.get_secret_value())
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_ASYNC)
 
 # Set up logging
 if config.config_file_name is not None:
@@ -29,14 +27,15 @@ def do_run_migrations(connection):
     return context.run_migrations()
 
 
-async def run_async_migrations():
+def run_migrations():
     """
-    Create async migrations
+    Run migrations
     """
-    engine = create_async_engine(settings.DATABASE_URL.get_secret_value())
-    async with engine.begin() as connection:
-        await connection.run_sync(do_run_migrations)
-    await engine.dispose()
+    engine = create_engine(settings.DATABASE_URL_SYNC)
+    with engine.connect() as connection:
+        context.configure(connection=connection, target_metadata=target_metadata)
+        with context.begin_transaction():
+            context.run_migrations()
 
 
 def run_migrations_offline() -> None:
@@ -55,14 +54,7 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
-    """
-    Run migrations in 'online' mode.
-    """
-    asyncio.run(run_async_migrations())
-
-
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    run_migrations()

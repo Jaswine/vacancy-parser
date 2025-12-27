@@ -14,9 +14,11 @@ from src.core.db.models.base import Base
 
 logger = logging.getLogger(__name__)
 
-
-engine: AsyncEngine = create_async_engine(
-    settings.DATABASE_URL.get_secret_value(),
+# ----------------------------
+# Asynchronous engine (for app)
+# ----------------------------
+async_engine: AsyncEngine = create_async_engine(
+    settings.DATABASE_URL_ASYNC,
     echo=True,  # Dev
     future=True,
     pool_pre_ping=True,
@@ -25,17 +27,14 @@ engine: AsyncEngine = create_async_engine(
 )
 
 async_session_local = async_sessionmaker(
-    bind=engine,
+    bind=async_engine,
     expire_on_commit=False,
     autoflush=False,
 )
 
-# sync engine (для Alembic)
-# sync_engine = create_engine(settings.DATABASE_URL.replace("aiosqlite", "pysqlite"), echo=True, future=True)
-
 
 async def init_db():
-    async with engine.begin() as conn:
+    async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 
@@ -56,7 +55,7 @@ async def main():
 
         traceback.print_exc()
     finally:
-        await engine.dispose()
+        await async_engine.dispose()
 
 
 if __name__ == "__main__":

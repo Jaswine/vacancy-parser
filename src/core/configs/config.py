@@ -14,7 +14,35 @@ class Settings(BaseSettings):
     )
 
     # PostgreSQL
-    DATABASE_URL: SecretStr
+    DB_HOST: SecretStr
+    DB_PORT: SecretStr
+    DB_USER: SecretStr
+    DB_PASSWORD: SecretStr
+    DB_NAME: SecretStr
+
+    @property
+    def DATABASE_URL_SYNC(self) -> str:
+        # Sync URL form Alembic
+        return (
+            f"postgresql://"
+            f"{self.DB_USER.get_secret_value()}:"
+            f"{self.DB_PASSWORD.get_secret_value()}@"
+            f"{self.DB_HOST.get_secret_value()}:"
+            f"{self.DB_PORT.get_secret_value()}/"
+            f"{self.DB_NAME.get_secret_value()}"
+        )
+
+    @property
+    def DATABASE_URL_ASYNC(self) -> str:
+        # Async URL for asyncpg / async SQLAlchemy
+        return (
+            f"postgresql+asyncpg://"
+            f"{self.DB_USER.get_secret_value()}:"
+            f"{self.DB_PASSWORD.get_secret_value()}@"
+            f"{self.DB_HOST.get_secret_value()}:"
+            f"{self.DB_PORT.get_secret_value()}/"
+            f"{self.DB_NAME.get_secret_value()}"
+        )
 
     # Redis
     REDIS_HOST: str = "localhost"
