@@ -1,3 +1,5 @@
+import uuid
+
 from datetime import datetime
 
 from sqlalchemy import Integer, ForeignKey, DateTime, String, Boolean, Enum
@@ -18,7 +20,7 @@ class Filter(Base):
 
     __tablename__ = "filters"
 
-    collection_id: Mapped[int | None] = mapped_column(
+    collection_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("collections.id"), index=True
     )
 

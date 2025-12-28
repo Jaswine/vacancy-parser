@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import ForeignKey, String, Numeric
 from sqlalchemy.dialects.postgresql.base import UUID
 from sqlalchemy.orm import relationship, mapped_column, Mapped
@@ -14,10 +16,10 @@ class Transaction(Base):
 
     __tablename__ = "transactions"
 
-    account_id: Mapped[int] = mapped_column(
+    account_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("accounts.id")
     )
-    invoice_id: Mapped[int] = mapped_column(
+    invoice_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("invoices.id")
     )
 

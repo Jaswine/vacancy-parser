@@ -1,3 +1,5 @@
+import uuid
+
 from datetime import datetime
 
 from sqlalchemy import ForeignKey, String, Enum, Numeric, DateTime
@@ -15,10 +17,10 @@ class Invoice(Base):
 
     __tablename__ = "invoices"
 
-    account_id: Mapped[int] = mapped_column(
+    account_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("accounts.id")
     )
-    subscription_id: Mapped[int] = mapped_column(
+    subscription_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("subscriptions.id")
     )
 
@@ -43,7 +45,7 @@ class Invoice(Base):
         "Subscription", back_populates="invoices", foreign_keys=[subscription_id]
     )
 
-    transactions = relationship("Transaction", back_populates="invoices")
+    transactions = relationship("Transaction", back_populates="invoice")
 
     def __repr__(self) -> str:
         return (
