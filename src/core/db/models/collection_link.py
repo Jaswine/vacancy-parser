@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql.base import UUID
 from sqlalchemy.orm import relationship, mapped_column, Mapped
@@ -12,10 +14,10 @@ class CollectionLink(Base):
 
     __tablename__ = "collection_links"
 
-    collection_id: Mapped[int] = mapped_column(
+    collection_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("collections.id"), primary_key=True
     )
-    link_id: Mapped[int] = mapped_column(
+    link_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("links.id"), primary_key=True
     )
 

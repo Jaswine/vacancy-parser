@@ -1,3 +1,6 @@
+import uuid
+
+
 from datetime import datetime
 
 from sqlalchemy import Integer, ForeignKey, DateTime, Enum
@@ -16,10 +19,10 @@ class ParsingRun(Base):
 
     __tablename__ = "parsing_runs"
 
-    account_id: Mapped[int] = mapped_column(
+    account_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("accounts.id")
     )
-    collection_id: Mapped[int] = mapped_column(
+    collection_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("collections.id")
     )
 

@@ -30,6 +30,6 @@ class AccountResponse(AccountEmail):
         orm_mode = True
 
 
-class Token(BaseModel):
+class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
