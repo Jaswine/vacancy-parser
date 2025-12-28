@@ -3,9 +3,13 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas.account import AccountRegistrationData, TokenResponse, AccountLoginData
+from src.api.schemas.account import (
+    AccountRegistrationData,
+    TokenResponse,
+    AccountLoginData,
+)
 from src.api.utils.jwt_utils import create_access_token
-from src.core.utils.password_utils import verify_password, hash_password
+from src.core.utils.password_utils import verify_password
 from src.core.db.database import get_db
 from src.core.db.models import Account
 from src.core.repositories.account_repositories import AccountRepository
@@ -21,8 +25,7 @@ logger = logging.getLogger(__name__)
 # -------------------------
 @router.post("/registration")
 async def registration(
-    user: AccountRegistrationData,
-    db: AsyncSession = Depends(get_db)
+    user: AccountRegistrationData, db: AsyncSession = Depends(get_db)
 ):
     logger.info("Registration attempt", extra={"email": user.email})
 
@@ -41,7 +44,9 @@ async def registration(
             raise HTTPException(status_code=400, detail="Email already registered")
 
         # Create a new account
-        new_account: Account = await service.create_account(user.username, user.email, user.password)
+        new_account: Account = await service.create_account(
+            user.username, user.email, user.password
+        )
 
         logger.info(
             "Account successfully registered",
@@ -57,13 +62,14 @@ async def registration(
         )
         raise
 
+
 # -------------------------
 # Sign In
 # -------------------------
 @router.post("/sign-in", response_model=TokenResponse)
 async def sign_in(
-        user: AccountLoginData,
-        db: AsyncSession = Depends(get_db),
+    user: AccountLoginData,
+    db: AsyncSession = Depends(get_db),
 ):
     logger.info("Login attempt", extra={"email": user.email})
 
@@ -104,4 +110,3 @@ async def sign_in(
             extra={"email": user.email},
         )
         raise
-

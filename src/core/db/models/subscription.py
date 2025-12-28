@@ -27,7 +27,9 @@ class Subscription(Base):
     extra_futures: Mapped[int | None] = mapped_column(JSON, nullable=False, default=[])
 
     invoices = relationship("Invoice", back_populates="subscription")
-    account_subscriptions = relationship("AccountSubscription", back_populates="subscription")
+    account_subscriptions = relationship(
+        "AccountSubscription", back_populates="subscription"
+    )
 
     def __repr__(self) -> str:
         return (

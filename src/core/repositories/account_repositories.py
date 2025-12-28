@@ -5,7 +5,6 @@ from src.core.db.models import Account
 
 
 class AccountRepository:
-
     def __init__(self, session: AsyncSession):
         self.session = session
 
