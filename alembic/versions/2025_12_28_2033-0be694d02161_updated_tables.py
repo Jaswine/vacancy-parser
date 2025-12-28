@@ -1,8 +1,8 @@
-"""updated id
+"""updated tables
 
-Revision ID: 7a1b45ffc953
-Revises: 8bd419339a42
-Create Date: 2025-12-28 02:38:01.362149
+Revision ID: 0be694d02161
+Revises:
+Create Date: 2025-12-28 20:33:35.278873
 
 """
 
@@ -13,8 +13,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "7a1b45ffc953"
-down_revision: Union[str, None] = "8bd419339a42"
+revision: str = "0be694d02161"
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -258,7 +258,7 @@ def upgrade() -> None:
     )
     op.create_table(
         "filters",
-        sa.Column("collection_id", sa.UUID(), nullable=True),
+        sa.Column("collection_id", sa.UUID(), nullable=False),
         sa.Column("title", sa.String(length=255), nullable=True),
         sa.Column("skills", sa.String(length=255), nullable=True),
         sa.Column("complete_match_of_skills", sa.Boolean(), nullable=True),

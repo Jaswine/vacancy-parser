@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import ForeignKey, String, Enum
 from sqlalchemy.dialects.postgresql.base import UUID
 from sqlalchemy.orm import relationship, mapped_column, Mapped
@@ -19,7 +21,7 @@ class Collection(Base):
         Enum(Status), default=Status.ACTIVE, nullable=False
     )
 
-    account_id: Mapped[int] = mapped_column(
+    account_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("accounts.id")
     )
     account: Mapped[Account] = relationship(
@@ -34,8 +36,8 @@ class Collection(Base):
         "Link", secondary="collection_links", back_populates="collections"
     )
 
-    parsing_runs = relationship("ParsingRun", back_populates="collections")
-    filters = relationship("Filter", back_populates="collections")
+    parsing_runs = relationship("ParsingRun", back_populates="collection")
+    filters = relationship("Filter", back_populates="collection")
 
     def __repr__(self) -> str:
         return f"<Collection(id={self.id}, name={self.name}, activity_status={self.activity_status})>"
