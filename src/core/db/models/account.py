@@ -34,6 +34,8 @@ class Account(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=True
     )
 
+    verification_codes = relationship("VerificationCode", back_populates="account")
+
     collections = relationship("Collection", back_populates="account")
     parsing_runs = relationship("ParsingRun", back_populates="account")
 

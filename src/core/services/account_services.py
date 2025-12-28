@@ -20,3 +20,6 @@ class AccountService:
             password_hash=hash_password(password),
         )
         return await self.account_repository.create(account)
+
+    async def verify_account(self, code: str) -> Account:
+        pass
