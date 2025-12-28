@@ -26,9 +26,9 @@ class Subscription(Base):
     description: Mapped[str | None] = mapped_column(String(255), nullable=True)
     extra_futures: Mapped[int | None] = mapped_column(JSON, nullable=False, default=[])
 
-    invoices = relationship("Invoice", back_populates="subscriptions")
-    account_subscription = relationship(
-        "AccountSubscription", back_populates="subscriptions"
+    invoices = relationship("Invoice", back_populates="subscription")
+    account_subscriptions = relationship(
+        "AccountSubscription", back_populates="subscription"
     )
 
     def __repr__(self) -> str:
