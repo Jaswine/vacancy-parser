@@ -9,11 +9,13 @@ from src.api.schemas.account import (
     AccountLoginData,
 )
 from src.api.utils.jwt_utils import create_access_token
+from src.core.repositories.verification_repository import VerificationRepository
+from src.core.services.verification_service import VerificationService
 from src.core.utils.password_utils import verify_password
 from src.core.db.database import get_db
 from src.core.db.models import Account
-from src.core.repositories.account_repositories import AccountRepository
-from src.core.services.account_services import AccountService
+from src.core.repositories.account_repository import AccountRepository
+from src.core.services.account_service import AccountService
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -29,8 +31,8 @@ async def registration(
 ):
     logger.info("Registration attempt", extra={"email": user.email})
 
-    account_repository: AccountRepository = AccountRepository(db)
-    service: AccountService = AccountService(account_repository)
+    service: AccountService = AccountService(db)
+    verification_service: VerificationService = VerificationService(db)
 
     try:
         existing = await service.get_by_email(user.email)
@@ -47,6 +49,9 @@ async def registration(
         new_account: Account = await service.create_account(
             user.username, user.email, user.password
         )
+
+        # Verification code creating and sending
+        verification = await verification_service.create_and_send_code(new_account)
 
         logger.info(
             "Account successfully registered",

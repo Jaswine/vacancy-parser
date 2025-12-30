@@ -26,9 +26,26 @@ class VerificationCode(Base):
     type: Mapped[VerificationCodeType] = mapped_column(Enum(VerificationCodeType), nullable=False)
     attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     is_used: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    used_at: Mapped[datetime] = mapped_column(DateTime(timezone=True),
+                                                 server_default=func.now(), nullable=True)
 
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True),
+                                                 server_default=func.now(), nullable=False)
 
     account: Mapped[Account] = relationship(
         "Account", back_populates="verification_codes", foreign_keys=[account_id]
     )
+
+    def __repr__(self) -> str:
+        return (
+            f"<VerificationCode(id={self.id}, account_id={self.account_id}), "
+            f"email={self.email}, code_hash={self.code_hash}, type={self.type}, "
+            f"attempts={self.attempts}, is_used={self.is_used}, expires_at={self.expires_at}>"
+        )
+
+    def __str__(self) -> str:
+        return (
+            f"VerificationCode(id={self.id}, account_id={self.account_id}), "
+            f"email={self.email}, code_hash={self.code_hash}, type={self.type}, "
+            f"attempts={self.attempts}, is_used={self.is_used}, expires_at={self.expires_at}>"
+        )
