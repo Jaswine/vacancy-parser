@@ -59,6 +59,11 @@ class Settings(BaseSettings):
     # Application
     LOG_LEVEL: str = "INFO"
 
+    GMAIL_FROM: SecretStr
+    GMAIL_USERNAME: SecretStr
+    GMAIL_PASSWORD: SecretStr
+
+
 
 @lru_cache()
 def get_settings() -> Settings:

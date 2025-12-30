@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import String, DateTime, Enum
+from sqlalchemy import String, DateTime, Enum, Boolean
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 from sqlalchemy import func
 
@@ -33,6 +33,9 @@ class Account(Base):
     last_active: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=True
     )
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
+    verification_codes = relationship("VerificationCode", back_populates="account")
 
     collections = relationship("Collection", back_populates="account")
     parsing_runs = relationship("ParsingRun", back_populates="account")
