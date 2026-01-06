@@ -48,7 +48,7 @@
 
 #### Request
 
-`GET /admin-api/accounts/{username}/`
+`GET /admin-api/accounts/{username/id}/`
 
 #### Response
 

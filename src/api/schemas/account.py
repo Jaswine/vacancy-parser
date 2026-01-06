@@ -1,9 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Optional, List
-
 from pydantic import BaseModel
 
-from src.api.schemas.link_list import LinkListBase
+from src.api.schemas.account_subscription import AccountSubscriptionSchema
 
 
 class AccountEmail(BaseModel):
@@ -20,16 +19,16 @@ class AccountRegistrationData(AccountLoginData):
 
 class AccountResponse(AccountEmail):
     username: str
+    email: str
 
-    last_login: Optional[date]
-    last_active: Optional[date]
+    last_login: Optional[datetime]
+    created_at: Optional[datetime]
 
-    collections: List[LinkListBase] = []
+    collections_count: int
+    parsing_runs_count: int
+
+    subscriptions: List[AccountSubscriptionSchema] = []
 
     class Config:
-        orm_mode = True
-
-
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
+        # orm_mode = True
+        from_attributes = True

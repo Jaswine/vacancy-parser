@@ -17,7 +17,11 @@
   "created_at": "2025-12-19T12:00:00Z",
   "link_lists_count": 1,
   "subscriptions": [
-        {
+    {
+      "starts_at": "2026-01-10T12:00:00Z",
+      "expires_at": "2026-02-10T12:00:00Z",
+      "status": "active",
+      "subscription":  {
           "id": 1,  
           "name": "Free",
           "links_per_hour": 20,
@@ -27,7 +31,8 @@
           "features": ["history_7_days", 
             "export_to_csv", "export_to_xls", "export_to_txt"]
         }
-      ],
+    }
+  ],
   "parsing_runs_count": 10
 }
 ```

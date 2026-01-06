@@ -2,10 +2,10 @@ from enum import Enum as PyEnum
 
 
 class ActivitySubscribeStatus(PyEnum):
-    ACTIVE = "ACTIVE"
-    BLOCKED = "BLOCKED"
-    ARCHIVED = "ARCHIVED"
-    DISABLED = "DISABLED"
-    FAILED = "FAILED"
-    PENDING = "PENDING"
-    SUSPENDED = "SUSPENDED"
+    ACTIVE = "Active"
+    BLOCKED = "Blocked"
+    ARCHIVED = "Archived"
+    DISABLED = "Disabled"
+    FAILED = "Failed"
+    PENDING = "Pending"
+    SUSPENDED = "Suspended"

@@ -2,6 +2,6 @@ from enum import Enum as PyEnum
 
 
 class TargetType(PyEnum):
-    MONTHLY = "MONTHLY"
-    YEARLY = "YEARLY"
-    CUSTOM = "CUSTOM"
+    MONTHLY = "Monthly"
+    YEARLY = "Yearly"
+    CUSTOM = "Custom"
