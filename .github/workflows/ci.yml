@@ -42,3 +42,17 @@ jobs:
 
       - name: Run mypy type checker
         run: python3 -m mypy src/
+
+  check-pr-direction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR direction
+        run: |
+          echo "Base: ${{ github.base_ref }}"
+          echo "Head: ${{ github.head_ref }}"
+      - name: Fail if PR to main not from test
+        run: |
+          if [[ "${{ github.base_ref }}" == "main" && "${{ github.head_ref }}" != "test" ]]; then
+            echo "❌ PR to main is allowed only from test"
+            exit 1
+          fi

@@ -5,9 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas.account import (
     AccountRegistrationData,
-    TokenResponse,
     AccountLoginData,
 )
+from src.api.schemas.auth import TokenResponse
 from src.api.utils.jwt_utils import create_access_token
 from src.core.utils.password_utils import verify_password
 from src.core.db.database import get_db
@@ -92,6 +92,8 @@ async def sign_in(
                 extra={"account_id": str(account.id)},
             )
             raise HTTPException(status_code=401, detail="Invalid email or password")
+
+        await service.update_last_login_time(account)
 
         token = create_access_token({"sub": str(account.id)})
 

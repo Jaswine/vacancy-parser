@@ -2,15 +2,15 @@ from enum import Enum as PyEnum
 
 
 class TransactionStatus(PyEnum):
-    PENDING = "pending"
-    PROCESSING = "processing"
+    PENDING = "Pending"
+    PROCESSING = "Processing"
 
-    SUCCESS = "success"
-    FAILED = "failed"
-    CANCELED = "canceled"
-    EXPIRED = "expired"
+    SUCCESS = "Success"
+    FAILED = "Failed"
+    CANCELED = "Canceled"
+    EXPIRED = "Expired"
 
-    REFUNDED = "refunded"
-    CHARGEBACK = "chargeback"
+    REFUNDED = "Refunded"
+    CHARGEBACK = "Chargeback"
 
-    ERROR = "error"
+    ERROR = "Error"
