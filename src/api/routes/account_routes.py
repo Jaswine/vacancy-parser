@@ -4,11 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies.auth import get_current_user_payload
-from src.api.schemas.account import  AccountResponse
+from src.api.schemas.account import AccountResponse
 from src.core.db.database import get_db
-from src.core.db.models import Account
 from src.core.repositories.account_repositories import AccountRepository
-from src.core.schemas.Account import AccountSchema
 from src.core.services.account_services import AccountService
 
 router = APIRouter(prefix="/account", tags=["Account"])
@@ -22,7 +20,7 @@ logger = logging.getLogger(__name__)
 @router.get("/me", response_model=AccountResponse)
 async def me(
     payload: dict = Depends(get_current_user_payload),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
     account_repository: AccountRepository = AccountRepository(db)
     service: AccountService = AccountService(account_repository)
@@ -30,7 +28,7 @@ async def me(
     account_id = payload["sub"]
 
     try:
-        account: AccountSchema = await service.get_by_id_with_relations(account_id)
+        account = await service.get_by_id_with_relations(account_id)
 
         if not account:
             logger.warning(

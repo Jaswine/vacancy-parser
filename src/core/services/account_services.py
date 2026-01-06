@@ -5,7 +5,7 @@ from datetime import datetime
 
 from src.core.db.models import Account
 from src.core.repositories.account_repositories import AccountRepository
-from src.core.schemas.Account import AccountSchema
+from src.core.schemas.account import AccountSchema
 from src.core.utils.password_utils import hash_password
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,9 @@ class AccountService:
     def __init__(self, account_repository: AccountRepository):
         self.account_repository = account_repository
 
-    async def get_by_id_with_relations(self, account_id: uuid.UUID) -> AccountSchema | None:
+    async def get_by_id_with_relations(
+        self, account_id: uuid.UUID
+    ) -> AccountSchema | None:
         """
         Get an account by its ID
         """

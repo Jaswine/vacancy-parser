@@ -1,12 +1,11 @@
 from datetime import datetime
 from typing import Optional, List
-
-from aiokafka.protocol.types import Schema
+from pydantic import BaseModel
 
 from src.api.schemas.subscription import SubscriptionSchema
 
 
-class AccountSchema(Schema):
+class AccountSchema(BaseModel):
     username: str
     email: str
     last_login: Optional[datetime]

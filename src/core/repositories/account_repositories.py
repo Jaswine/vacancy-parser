@@ -1,15 +1,12 @@
 import uuid
-from typing import Any
 
 from sqlalchemy import func, distinct
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.db.enums.account_subscription_status import AccountSubscriptionStatus
-from src.core.db.enums.status import Status
 from src.core.db.models import Account, Collection, ParsingRun, AccountSubscription
-from src.core.schemas.Account import AccountSchema
+from src.core.schemas.account import AccountSchema
 
 
 class AccountRepository:
@@ -25,7 +22,9 @@ class AccountRepository:
         )
         return result.scalar_one_or_none()
 
-    async def get_by_id_with_relations(self, account_id: uuid.UUID) -> AccountSchema | None:
+    async def get_by_id_with_relations(
+        self, account_id: uuid.UUID
+    ) -> AccountSchema | None:
         """
         Get an account by its ID
         """
@@ -49,12 +48,14 @@ class AccountRepository:
             .outerjoin(ParsingRun, ParsingRun.account_id == Account.id)
             .where(Account.id == account_id)
             .options(
-                selectinload(Account.account_subscriptions).selectinload(AccountSubscription.subscription),
+                selectinload(Account.account_subscriptions).selectinload(
+                    AccountSubscription.subscription
+                ),
             )
             .group_by(Account.id)
         )
         result = await self.session.execute(stmt)
-        row: Account | None = result.one_or_none()
+        row = result.one_or_none()
 
         if row is None:
             return None
