@@ -1,15 +1,18 @@
 import logging
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies.auth import get_current_user_payload
-from src.api.schemas.collection import (CollectionFindAllSchema, CollectionCreateSchema,
-                                        CollectionCreateData, CollectionFindOneSchema, CollectionUpdateNameData)
+from src.api.schemas.collection import (
+    CollectionFindAllSchema,
+    CollectionCreateSchema,
+    CollectionCreateData,
+    CollectionFindOneSchema,
+    CollectionUpdateNameData,
+)
 from src.api.schemas.message import MessageSuccess
-from src.core import db
 from src.core.db.database import get_db
 from src.core.repositories.collection_repositories import CollectionRepository
 from src.core.services.collection_services import CollectionService
@@ -27,8 +30,8 @@ logger = logging.getLogger(__name__)
 async def show_collection(
     payload: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),
-    page: int | None = Query(1, ge=1, description="Page number"),
-    page_size: int | None = Query(10, ge=1, le=100, description="Number of items per page"),
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
 ):
     collection_repository: CollectionRepository = CollectionRepository(db)
     service: CollectionService = CollectionService(collection_repository)
@@ -41,14 +44,13 @@ async def show_collection(
         total_collections = await service.get_total_collections_count(account_id)
 
         # Get paginated collections
-        collections = await service.find_collections_paginated_by_account_id(account_id, page, page_size)
+        collections = await service.find_collections_paginated_by_account_id(
+            account_id, page, page_size
+        )
 
         # Build and return response
         return CollectionFindAllSchema(
-            page=page,
-            page_size=page_size,
-            total=total_collections,
-            items=collections
+            page=page, page_size=page_size, total=total_collections, items=collections
         )
     except Exception:
         logger.exception(
@@ -56,6 +58,7 @@ async def show_collection(
             extra={"id": account_id},
         )
         raise
+
 
 # -------------------------
 # Create a new collection
@@ -82,14 +85,15 @@ async def create_collection(
         )
         raise
 
+
 # -------------------------
 # Get collection by id
 # -------------------------
 @router.get("/{collection_id}", response_model=CollectionFindOneSchema)
 async def get_collection_by_id(
-        collection_id: UUID,
-        payload: dict = Depends(get_current_user_payload),
-        db: AsyncSession = Depends(get_db),
+    collection_id: UUID,
+    payload: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
 ):
     collection_repository: CollectionRepository = CollectionRepository(db)
     service: CollectionService = CollectionService(collection_repository)
@@ -103,15 +107,16 @@ async def get_collection_by_id(
         )
         raise
 
+
 # -------------------------
 # Update collection's name by id
 # -------------------------
 @router.patch("/{collection_id}", response_model=MessageSuccess)
 async def update_collection(
-        collection_id: UUID,
-        collection_data: CollectionUpdateNameData,
-        payload: dict = Depends(get_current_user_payload),
-        db: AsyncSession = Depends(get_db)
+    collection_id: UUID,
+    collection_data: CollectionUpdateNameData,
+    payload: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
 ):
     collection_repository: CollectionRepository = CollectionRepository(db)
     service: CollectionService = CollectionService(collection_repository)
@@ -150,14 +155,15 @@ async def update_collection(
         )
         raise
 
+
 # -------------------------
 # Remove collection by id
 # -------------------------
 @router.delete("/{collection_id}")
 async def remove_collection(
-        collection_id: UUID,
-        payload: dict = Depends(get_current_user_payload),
-        db: AsyncSession = Depends(get_db)
+    collection_id: UUID,
+    payload: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
 ):
     collection_repository: CollectionRepository = CollectionRepository(db)
     service: CollectionService = CollectionService(collection_repository)

@@ -1,7 +1,6 @@
-from datetime import datetime
-from typing import Sequence, List, Any
+from typing import List
 
-from sqlalchemy import func, distinct, Row
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from uuid import UUID
@@ -15,9 +14,9 @@ class CollectionRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def find_collections_paginated_by_account_id(self, account_id: UUID, 
-                                                       page: int, page_size: int) \
-            -> List[CollectionFindAllSchema]:
+    async def find_collections_paginated_by_account_id(
+        self, account_id: UUID, page: int, page_size: int
+    ) -> List[CollectionFindAllSchema]:
         """
         Find all collections by the given account ID
         """
@@ -41,19 +40,15 @@ class CollectionRepository:
             .order_by(Collection.created_at.desc())
         )
         return result.mappings().all()
-    
+
     async def count_collections_by_account_id(self, account_id: UUID) -> int:
         """
         Count total collections by the given account ID
         """
         result = await self.session.execute(
-            select(
-                func.count(Collection.id)
-            )
-            .where(
+            select(func.count(Collection.id)).where(
                 Collection.account_id == account_id,
                 Collection.activity_status == Status.ACTIVE,
-
             )
         )
         return result.scalar_one()
@@ -72,12 +67,13 @@ class CollectionRepository:
         Find a collection by its ID
         """
         result = await self.session.execute(
-            select(Collection)
-            .where(Collection.id == collection_id)
+            select(Collection).where(Collection.id == collection_id)
         )
         return result.scalar_one_or_none()
 
-    async def find_collection_specific_data_by_id(self, collection_id: UUID) -> CollectionFindOneSchema | None:
+    async def find_collection_specific_data_by_id(
+        self, collection_id: UUID
+    ) -> CollectionFindOneSchema | None:
         """
         Find a collection by its ID
         """

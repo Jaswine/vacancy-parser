@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
@@ -11,6 +10,7 @@ class CollectionFindAllSchema(BaseModel):
     name: str
     created_at: Optional[datetime]
     links_count: int
+
 
 class CollectionFindOneSchema(BaseModel):
     id: UUID
