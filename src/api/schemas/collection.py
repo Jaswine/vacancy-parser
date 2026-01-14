@@ -13,9 +13,8 @@ class CollectionItemSchema(BaseModel):
     created_at: Optional[datetime]
     links_count: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}
+
 
 class CollectionFindAllPaginationSchema(BaseModel):
     page: int
@@ -40,9 +39,7 @@ class CollectionFindOneSchema(BaseModel):
     created_at: Optional[datetime]
     links_count: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}
 
 
 class CollectionUpdateNameData(BaseModel):

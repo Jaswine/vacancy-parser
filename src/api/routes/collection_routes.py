@@ -46,7 +46,9 @@ async def show_collection(
         total_collections = await service.get_total_collections_count(account_id)
 
         # Get paginated collections
-        collections: List[CollectionFindAllSchema] = await service.find_collections_paginated_by_account_id(
+        collections: List[
+            CollectionFindAllSchema
+        ] = await service.find_collections_paginated_by_account_id(
             account_id, page, page_size
         )
 
@@ -125,7 +127,9 @@ async def update_collection(
 
     try:
         # Get collection by id
-        collection: Collection | None = await service.find_collection_by_id(collection_id)
+        collection: Collection | None = await service.find_collection_by_id(
+            collection_id
+        )
         if not collection:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -172,7 +176,9 @@ async def remove_collection(
 
     try:
         # Get collection by id
-        collection: Collection | None = await service.find_collection_by_id(collection_id)
+        collection: Collection | None = await service.find_collection_by_id(
+            collection_id
+        )
         if not collection:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
