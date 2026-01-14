@@ -343,13 +343,6 @@ how many vacancies have the specified salary, skills, and location
   "id": "1",
   "name": "Favorite companies",
   "total_items": 150,
-  "links": [
-    {
-      "id": 1,
-      "company_name": "ILLO",
-      "url": "https://illo.co"
-    }
-  ],
   "created_at": "2025-12-19T12:00:00Z"
 }
 ```

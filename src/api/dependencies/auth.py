@@ -21,13 +21,13 @@ def get_current_user_payload(
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token",
+            detail="❌ Invalid or expired token",
         )
     user_id = payload.get("sub")
     if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token payload invalid",
+            detail="❌ Token payload invalid",
         )
 
     return payload
