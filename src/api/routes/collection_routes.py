@@ -1,4 +1,5 @@
 import logging
+from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
@@ -6,12 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies.auth import get_current_user_payload
 from src.api.schemas.collection import (
-    CollectionFindAllSchema,
+    CollectionFindAllPaginationSchema,
     CollectionCreateSchema,
     CollectionCreateData,
     CollectionFindOneSchema,
     CollectionUpdateNameData,
 )
+from src.core.schemas.collection import CollectionFindAllSchema
 from src.api.schemas.message import MessageSuccess
 from src.core.db.database import get_db
 from src.core.repositories.collection_repositories import CollectionRepository
@@ -26,7 +28,7 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Show all users' collections
 # -------------------------
-@router.get("", response_model=CollectionFindAllSchema)
+@router.get("", response_model=CollectionFindAllPaginationSchema)
 async def show_collection(
     payload: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),
@@ -44,12 +46,12 @@ async def show_collection(
         total_collections = await service.get_total_collections_count(account_id)
 
         # Get paginated collections
-        collections = await service.find_collections_paginated_by_account_id(
+        collections: List[CollectionFindAllSchema] = await service.find_collections_paginated_by_account_id(
             account_id, page, page_size
         )
 
         # Build and return response
-        return CollectionFindAllSchema(
+        return CollectionFindAllPaginationSchema(
             page=page, page_size=page_size, total=total_collections, items=collections
         )
     except Exception:
@@ -123,7 +125,7 @@ async def update_collection(
 
     try:
         # Get collection by id
-        collection: Collection = await service.find_collection_by_id(collection_id)
+        collection: Collection | None = await service.find_collection_by_id(collection_id)
         if not collection:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -170,7 +172,7 @@ async def remove_collection(
 
     try:
         # Get collection by id
-        collection: Collection = await service.find_collection_by_id(collection_id)
+        collection: Collection | None = await service.find_collection_by_id(collection_id)
         if not collection:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,

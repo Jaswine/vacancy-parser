@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="Vacancy parser",
     version="1.0.0",
-    openapi_prefix="/api",
+    root_path="/api",
 )
 
 

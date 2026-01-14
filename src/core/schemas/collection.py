@@ -11,7 +11,6 @@ class CollectionFindAllSchema(BaseModel):
     created_at: Optional[datetime]
     links_count: int
 
-
 class CollectionFindOneSchema(BaseModel):
     id: UUID
     name: str

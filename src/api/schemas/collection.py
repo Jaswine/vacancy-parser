@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Optional, List
 from uuid import UUID
 
+from src.core.schemas.collection import CollectionFindAllSchema
+
 from pydantic import BaseModel
 
 
@@ -11,15 +13,15 @@ class CollectionItemSchema(BaseModel):
     created_at: Optional[datetime]
     links_count: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
-
-class CollectionFindAllSchema(BaseModel):
+class CollectionFindAllPaginationSchema(BaseModel):
     page: int
     page_size: int
     total: int
-    items: List[CollectionItemSchema]
+    items: List[CollectionFindAllSchema]
 
 
 class CollectionCreateData(BaseModel):
@@ -38,8 +40,9 @@ class CollectionFindOneSchema(BaseModel):
     created_at: Optional[datetime]
     links_count: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class CollectionUpdateNameData(BaseModel):

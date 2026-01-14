@@ -39,7 +39,9 @@ class CollectionRepository:
             .offset(offset)
             .order_by(Collection.created_at.desc())
         )
-        return result.mappings().all()
+        rows = result.mappings().all()
+
+        return [CollectionFindAllSchema(**row) for row in rows]
 
     async def count_collections_by_account_id(self, account_id: UUID) -> int:
         """
@@ -62,7 +64,7 @@ class CollectionRepository:
         await self.session.refresh(collection)
         return collection
 
-    async def find_collection_by_id(self, collection_id: UUID) -> Collection:
+    async def find_collection_by_id(self, collection_id: UUID) -> Collection | None:
         """
         Find a collection by its ID
         """
@@ -90,7 +92,11 @@ class CollectionRepository:
             )
             .group_by(Collection.id)
         )
-        return result.one_or_none()
+        row = result.mappings().one_or_none()
+        if row is None:
+            return None
+
+        return CollectionFindOneSchema(**row)
 
     async def save(self, collection: Collection) -> None:
         """

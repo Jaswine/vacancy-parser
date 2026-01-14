@@ -33,7 +33,7 @@ class CollectionService:
         new_collection: Collection = Collection(account_id=account_id, name=name)
         return await self.collection_repository.create(new_collection)
 
-    async def find_collection_by_id(self, collection_id: UUID) -> Collection:
+    async def find_collection_by_id(self, collection_id: UUID) -> Collection | None:
         """
         Find a collection by its ID
         """
