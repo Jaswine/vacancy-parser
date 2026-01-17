@@ -1,13 +1,13 @@
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies.auth import get_current_user_payload
 from src.api.schemas.account import AccountResponse
 from src.core.db.database import get_db
-from src.core.repositories.account_repositories import AccountRepository
-from src.core.services.account_services import AccountService
+from src.core.repositories.account_repository import AccountRepository
+from src.core.services.account_service import AccountService
 
 router = APIRouter(prefix="/account", tags=["Account"])
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Account
 # -------------------------
-@router.get("/me", response_model=AccountResponse)
+@router.get("/me", response_model=AccountResponse, status_code=status.HTTP_200_OK)
 async def me(
     payload: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),

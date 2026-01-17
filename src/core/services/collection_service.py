@@ -3,7 +3,7 @@ from typing import List
 from uuid import UUID
 
 from src.core.db.enums.status import Status
-from src.core.repositories.collection_repositories import CollectionRepository
+from src.core.repositories.collection_repository import CollectionRepository
 from src.core.db.models import Collection
 from src.core.schemas.collection import CollectionFindAllSchema, CollectionFindOneSchema
 

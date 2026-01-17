@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 
 from src.core.db.models import Account
-from src.core.repositories.account_repositories import AccountRepository
+from src.core.repositories.account_repository import AccountRepository
 from src.core.schemas.account import AccountSchema
 from src.core.utils.password_utils import hash_password
 
