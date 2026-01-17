@@ -23,12 +23,11 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Registration
 # -------------------------
-@router.post("/registration",
-             response_model=TokenResponse,
-             status_code=status.HTTP_200_OK)
+@router.post(
+    "/registration", response_model=TokenResponse, status_code=status.HTTP_200_OK
+)
 async def registration(
-    user: AccountRegistrationData,
-    db: AsyncSession = Depends(get_db)
+    user: AccountRegistrationData, db: AsyncSession = Depends(get_db)
 ):
     logger.info("Registration attempt", extra={"email": user.email})
 
@@ -69,9 +68,7 @@ async def registration(
 # -------------------------
 # Sign In
 # -------------------------
-@router.post("/sign-in",
-             response_model=TokenResponse,
-             status_code=status.HTTP_200_OK)
+@router.post("/sign-in", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def sign_in(
     user: AccountLoginData,
     db: AsyncSession = Depends(get_db),

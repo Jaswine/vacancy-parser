@@ -1,5 +1,6 @@
-from celery.bin.result import result
-from sqlalchemy import UUID, select
+from uuid import UUID
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.db.models import CollectionLink
@@ -14,10 +15,9 @@ class CollectionLinkRepository:
         Check if a collection link exists
         """
         result = await self.session.execute(
-            select(CollectionLink)
-            .where(
+            select(CollectionLink).where(
                 CollectionLink.collection_id == collection_id,
-                CollectionLink.link_id == link_id
+                CollectionLink.link_id == link_id,
             )
         )
         return result.scalar_one_or_none() is not None
@@ -32,17 +32,16 @@ class CollectionLinkRepository:
         # await self.session.flush()
         return collection_link
 
-    async def find_by_collection_id_and_link_id(self,
-                                                collection_id: UUID,
-                                                link_id: UUID) -> CollectionLink | None:
+    async def find_by_collection_id_and_link_id(
+        self, collection_id: UUID, link_id: UUID
+    ) -> CollectionLink | None:
         """
         Find a collection link by collection_id and link_id
         """
         result = await self.session.execute(
-            select(CollectionLink)
-            .where(
+            select(CollectionLink).where(
                 CollectionLink.collection_id == collection_id,
-                CollectionLink.link_id == link_id
+                CollectionLink.link_id == link_id,
             )
         )
 
@@ -53,4 +52,3 @@ class CollectionLinkRepository:
         Save the collection link
         """
         await self.session.commit()
-

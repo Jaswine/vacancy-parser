@@ -15,7 +15,7 @@ class LinkRepository:
         self.session = session
 
     async def find_links_paginated_by_collection_id(
-            self, collection_id: UUID, page: int, page_size: int
+        self, collection_id: UUID, page: int, page_size: int
     ) -> List[LinkFindAllSchema]:
         """
         Find all links by the given collection ID
@@ -67,18 +67,14 @@ class LinkRepository:
         """
         Get link by url
         """
-        result = await self.session.execute(
-            select(Link).where(Link.url == url)
-        )
+        result = await self.session.execute(select(Link).where(Link.url == url))
         return result.scalar_one_or_none()
 
     async def get_by_id(self, link_id: UUID) -> Link | None:
         """
         Get link by id
         """
-        result = await self.session.execute(
-            select(Link).where(Link.id == link_id)
-        )
+        result = await self.session.execute(select(Link).where(Link.id == link_id))
         return result.scalar_one_or_none()
 
     async def save(self):
@@ -86,4 +82,3 @@ class LinkRepository:
         Save an existing link
         """
         await self.session.commit()
-

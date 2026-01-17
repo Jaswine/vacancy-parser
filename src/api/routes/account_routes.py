@@ -17,9 +17,7 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Account
 # -------------------------
-@router.get("/me",
-            response_model=AccountResponse,
-            status_code=status.HTTP_200_OK)
+@router.get("/me", response_model=AccountResponse, status_code=status.HTTP_200_OK)
 async def me(
     payload: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),

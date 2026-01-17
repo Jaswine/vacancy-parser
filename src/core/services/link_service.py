@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.db.enums.status import Status
 from src.core.db.models import Link, CollectionLink
-from src.core.repositories import link_repository
 from src.core.repositories.collection_link_repository import CollectionLinkRepository
 from src.core.repositories.link_repository import LinkRepository
 from src.core.schemas.link import LinkFindAllSchema
@@ -14,17 +13,18 @@ from src.core.schemas.link import LinkFindAllSchema
 logger = logging.getLogger(__name__)
 
 class LinkService:
-    def __init__(self,
-                 session: AsyncSession,
-                 link_repository: LinkRepository,
-                 collection_link_repository: CollectionLinkRepository
-                 ) -> None:
+    def __init__(
+        self,
+        session: AsyncSession,
+        link_repository: LinkRepository,
+        collection_link_repository: CollectionLinkRepository,
+    ) -> None:
         self.session = session
         self.link_repository = link_repository
         self.collection_link_repository = collection_link_repository
 
     async def find_links_paginated_by_collection_id(
-            self, collection_id: UUID, page: int, page_size: int
+        self, collection_id: UUID, page: int, page_size: int
     ) -> List[LinkFindAllSchema]:
         """
         Find all links by the given collection ID
@@ -43,6 +43,9 @@ class LinkService:
         """
         Create a new link
         """
+
+        # !!!: Rewrite, create a transaction
+
         # Check if link exists
         link = await self.link_repository.get_by_url(url)
 
@@ -55,9 +58,12 @@ class LinkService:
             link = Link(url=url)
             link = await self.link_repository.create(link)
 
-            # Attach link to collection if not already attached
-        attached: CollectionLink = await self.collection_link_repository.find_by_collection_id_and_link_id(
-            collection_id, link.id)
+        # Attach link to collection if not already attached
+        attached: (
+            CollectionLink | None
+        ) = await self.collection_link_repository.find_by_collection_id_and_link_id(
+            collection_id, link.id
+        )
         if attached:
             if attached.activity_status == Status.ARCHIVED:
                 attached.activity_status = Status.ACTIVE
@@ -79,9 +85,5 @@ class LinkService:
         """
         Remove a link
         """
-        # link.status = Status.ARCHIVED
-        # await self.link_repository.save()
-
         collection_link.activity_status = Status.ARCHIVED
         await self.collection_link_repository.save()
-

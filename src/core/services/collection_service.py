@@ -20,8 +20,10 @@ class CollectionService:
         """
         Find all collections by the given account ID
         """
-        return await self.collection_repository.find_collections_paginated_by_account_id(
+        return (
+            await self.collection_repository.find_collections_paginated_by_account_id(
                 account_id, page, page_size
+            )
         )
 
     async def create_collection(self, account_id: UUID, name: str) -> Collection:
