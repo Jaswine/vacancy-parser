@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas.account import (
@@ -12,8 +12,8 @@ from src.api.utils.jwt_utils import create_access_token
 from src.core.utils.password_utils import verify_password
 from src.core.db.database import get_db
 from src.core.db.models import Account
-from src.core.repositories.account_repositories import AccountRepository
-from src.core.services.account_services import AccountService
+from src.core.repositories.account_repository import AccountRepository
+from src.core.services.account_service import AccountService
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -23,9 +23,12 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Registration
 # -------------------------
-@router.post("/registration")
+@router.post("/registration",
+             response_model=TokenResponse,
+             status_code=status.HTTP_200_OK)
 async def registration(
-    user: AccountRegistrationData, db: AsyncSession = Depends(get_db)
+    user: AccountRegistrationData,
+    db: AsyncSession = Depends(get_db)
 ):
     logger.info("Registration attempt", extra={"email": user.email})
 
@@ -66,7 +69,9 @@ async def registration(
 # -------------------------
 # Sign In
 # -------------------------
-@router.post("/sign-in", response_model=TokenResponse)
+@router.post("/sign-in",
+             response_model=TokenResponse,
+             status_code=status.HTTP_200_OK)
 async def sign_in(
     user: AccountLoginData,
     db: AsyncSession = Depends(get_db),

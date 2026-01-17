@@ -399,7 +399,6 @@ how many vacancies have the specified salary, skills, and location
     {
       "id": "1",
       "url": "https://example.com",
-      "created_at": "2025-12-19T12:00:00Z"
     }
   ]
 }
@@ -410,7 +409,7 @@ how many vacancies have the specified salary, skills, and location
 
 #### Request
 
-`POST /api/collections/{collection_id}/links/`
+`POST /api/collections/{collection_id}/links/create`
 
 ```json
 {
@@ -433,7 +432,7 @@ how many vacancies have the specified salary, skills, and location
 
 #### Request
 
-`DELETE /api/collections/{collection_id}/links/{id}`
+`DELETE /api/collections/links/{id}/remove`
 
 #### Response
 

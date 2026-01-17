@@ -16,8 +16,8 @@ from src.api.schemas.collection import (
 from src.core.schemas.collection import CollectionFindAllSchema
 from src.api.schemas.message import MessageSuccess
 from src.core.db.database import get_db
-from src.core.repositories.collection_repositories import CollectionRepository
-from src.core.services.collection_services import CollectionService
+from src.core.repositories.collection_repository import CollectionRepository
+from src.core.services.collection_service import CollectionService
 from src.core.db.models import Collection
 
 router = APIRouter(prefix="/collections", tags=["Collection"])
@@ -28,7 +28,9 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Show all users' collections
 # -------------------------
-@router.get("", response_model=CollectionFindAllPaginationSchema)
+@router.get("",
+            response_model=CollectionFindAllPaginationSchema,
+            status_code=status.HTTP_200_OK)
 async def show_collection(
     payload: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),
@@ -67,7 +69,9 @@ async def show_collection(
 # -------------------------
 # Create a new collection
 # -------------------------
-@router.post("", response_model=CollectionCreateSchema)
+@router.post("",
+             response_model=CollectionCreateSchema,
+             status_code=status.HTTP_201_CREATED)
 async def create_collection(
     collection_data: CollectionCreateData,
     payload: dict = Depends(get_current_user_payload),
@@ -93,7 +97,9 @@ async def create_collection(
 # -------------------------
 # Get collection by id
 # -------------------------
-@router.get("/{collection_id}", response_model=CollectionFindOneSchema)
+@router.get("/{collection_id}",
+            response_model=CollectionFindOneSchema,
+            status_code=status.HTTP_200_OK)
 async def get_collection_by_id(
     collection_id: UUID,
     payload: dict = Depends(get_current_user_payload),
@@ -115,7 +121,9 @@ async def get_collection_by_id(
 # -------------------------
 # Update collection's name by id
 # -------------------------
-@router.patch("/{collection_id}", response_model=MessageSuccess)
+@router.patch("/{collection_id}",
+              response_model=MessageSuccess,
+              status_code=status.HTTP_200_OK)
 async def update_collection(
     collection_id: UUID,
     collection_data: CollectionUpdateNameData,
@@ -165,7 +173,8 @@ async def update_collection(
 # -------------------------
 # Remove collection by id
 # -------------------------
-@router.delete("/{collection_id}")
+@router.delete("/{collection_id}",
+               status_code=status.HTTP_204_NO_CONTENT)
 async def remove_collection(
     collection_id: UUID,
     payload: dict = Depends(get_current_user_payload),
