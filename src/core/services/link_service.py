@@ -12,6 +12,7 @@ from src.core.schemas.link import LinkFindAllSchema
 
 logger = logging.getLogger(__name__)
 
+
 class LinkService:
     def __init__(
         self,
