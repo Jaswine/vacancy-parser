@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.db.models import Account, Collection, ParsingRun, AccountSubscription
+from src.core.db.models import Account, Collection, ParsingJob, AccountSubscription
 from src.core.schemas.account import AccountSchema
 
 
@@ -41,11 +41,11 @@ class AccountRepository:
             select(
                 Account,
                 func.count(distinct(Collection.id)).label("collections_count"),
-                func.count(distinct(ParsingRun.id)).label("parsing_runs_count"),
+                func.count(distinct(ParsingJob.id)).label("parsing_runs_count"),
             )
             .select_from(Account)
             .outerjoin(Collection, Collection.account_id == Account.id)
-            .outerjoin(ParsingRun, ParsingRun.account_id == Account.id)
+            .outerjoin(ParsingJob, ParsingJob.account_id == Account.id)
             .where(Account.id == account_id)
             .options(
                 selectinload(Account.account_subscriptions).selectinload(

@@ -2,7 +2,9 @@ from .account import Account
 from .collection import Collection
 from .link import Link
 from .filter import Filter
-from .parsing_run import ParsingRun
+from .parsing_job import ParsingJob
+from .parsing_task import ParsingTask
+from .proxy import Proxy
 from .account_subscription import AccountSubscription
 from .subscription import Subscription
 from .invoice import Invoice
@@ -19,5 +21,7 @@ __all__ = [
     "Link",
     "CollectionLink",
     "Filter",
-    "ParsingRun",
+    "ParsingJob",
+    "ParsingTask",
+    "Proxy"
 ]

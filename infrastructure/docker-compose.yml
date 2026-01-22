@@ -1,32 +1,45 @@
+version: "3.10"
+
 services:
+
   api:
     build:
       context: ..
-      dockerfile: Dockerfile
-  #    command: python src/api/main.py
+      dockerfile: docker/Dockerfile
+    # command: python src/api/main.py
+    container_name: vacancy-parser-api
     env_file:
       - ../.env
     volumes:
       - ../src:/app/src
-    restart: unless-stopped
-    container_name: vacancy-parser-api
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - ../alembic:/app/alembic
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "10m"
+#        max-file: "3"
     depends_on:
-      - db
-      - redis
+#      - postgresql
+#      - redis
+#      - zookeeper
+#      - kafka
+#      - kafka-ui
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     ports:
       - "8000:8000"
     command: >
-      bash -c "alembic upgrade head && python src/api/main.py"
+      bash -c "alembic upgrade head && 
+        uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload"
+    restart: unless-stopped
 
-  db:
+  postgresql:
     image: postgres:14
     container_name: vacancy-parser-postgres
-    restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-vacancy_parser}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-vacancy_parser}
@@ -35,17 +48,85 @@ services:
 #      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   redis:
     image: redis:7
     container_name: vacancy-parser-redis
-    restart: unless-stopped
     command: [ "redis-server", "--appendonly", "yes" ]
 #    ports:
 #      - "6379:6379"
     volumes:
       - redisdata:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  zookeeper:
+    image: 'confluentinc/cp-zookeeper:7.7.0'
+    hostname: zookeeper
+    container_name:  vacancy-parser-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - '2181:2181'
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "echo ruok | nc localhost 2181 | grep imok" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  kafka:
+    image: 'confluentinc/cp-kafka:7.7.0'
+    hostname: kafka
+    container_name: vacancy-parser-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - '9092:9092'
+      - '19092:19092'
+    healthcheck:
+      test: [ "CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  kafka-ui:
+    image: 'provectuslabs/kafka-ui:v0.7.2'
+    container_name: vacancy-parser-kafka-ui
+    ports:
+      - '8080:8080'
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    depends_on:
+      - kafka
+    restart: unless-stopped
 
 volumes:
   pgdata:
   redisdata:
+
+networks:
+  default:
+    name: kafka-network

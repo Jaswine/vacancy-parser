@@ -36,7 +36,7 @@ class Collection(Base):
         "Link", secondary="collection_links", back_populates="collections"
     )
 
-    parsing_runs = relationship("ParsingRun", back_populates="collection")
+    parsing_jobs = relationship("ParsingJob", back_populates="collection")
     filters = relationship("Filter", back_populates="collection")
 
     def __repr__(self) -> str:

@@ -25,6 +25,9 @@ class Link(Base):
         "Collection", secondary="collection_links", back_populates="links"
     )
 
+    parsing_tasks = relationship("ParsingTask", back_populates="links")
+
+
     def __repr__(self) -> str:
         return f"<Link(url={self.url})>"
 

@@ -147,6 +147,7 @@ async def remove_link(
                 detail="Link not found",
             )
 
+        # Get collection link relationship
         collection_link = await collection_link_service.get_collection_link_by_collection_id_and_link_id(
             collection_id, link_id
         )

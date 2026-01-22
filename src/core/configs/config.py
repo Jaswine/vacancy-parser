@@ -4,7 +4,7 @@ from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class CoreSettings(BaseSettings):
     """
     Application settings loaded from .env
     """
@@ -61,8 +61,8 @@ class Settings(BaseSettings):
 
 
 @lru_cache()
-def get_settings() -> Settings:
-    return Settings()  # type: ignore
+def get_settings() -> CoreSettings:
+    return CoreSettings()  # type: ignore
 
 
 settings = get_settings()

@@ -80,7 +80,7 @@ format: ## Formatting code using ruff
 	python3 -m ruff check --fix .
 	@echo "✅  Formatting complete."
 
-lint: ## Checking code formatting for CI
+lint: ## Checking code f    ormatting for CI
 	@echo "🔄  Checking code formatting..."
 	pip install ruff
 	python3 -m ruff format --check .

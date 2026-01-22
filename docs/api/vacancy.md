@@ -7,7 +7,7 @@ Creating a job for parsing, taking vacancies after parsing, creating links and l
 
 #### Request
 
-`POST /api/parsing/jobs/`
+`POST /api/collection/{collection_id}/jobs/`
 
 ```json
 {
