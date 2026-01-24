@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.db.models import ParsingJob
+from src.core.db.models import ParsingJob
 
 
 class ParsingJobRepository:

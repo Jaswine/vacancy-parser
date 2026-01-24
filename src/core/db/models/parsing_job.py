@@ -56,7 +56,8 @@ class ParsingJob(Base):
         "Collection", back_populates="parsing_jobs", foreign_keys=[collection_id]
     )
 
-    parsing_tasks = relationship("ParsingTask", back_populates="account")
+    parsing_tasks = relationship("ParsingTask",
+                                 back_populates="parsing_job")
 
 
     def __repr__(self) -> str:

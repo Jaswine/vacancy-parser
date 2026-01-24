@@ -35,6 +35,7 @@ class Account(Base):
     )
 
     collections = relationship("Collection", back_populates="account")
+
     parsing_jobs = relationship("ParsingJob", back_populates="account")
 
     subscriptions = relationship("AccountSubscription", back_populates="account")

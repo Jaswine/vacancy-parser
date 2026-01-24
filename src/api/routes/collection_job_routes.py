@@ -5,13 +5,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.schemas.job import JobURLsDataSchema, JobCreationResponseSchema
-from core.db.enums.job_status import JobStatus
-from core.db.enums.status import Status
-from core.db.models import ParsingJob
-from core.repositories.collection_repository import CollectionRepository
-from core.repositories.parsing_job_repository import ParsingJobRepository
-from core.services.collection_service import CollectionService
-from core.services.parsing_job_service import ParsingJobService
+from src.core.db.enums.job_status import JobStatus
+from src.core.db.enums.status import Status
+from src.core.db.models import ParsingJob
+from src.core.repositories.collection_repository import CollectionRepository
+from src.core.repositories.parsing_job_repository import ParsingJobRepository
+from src.core.services.collection_service import CollectionService
+from src.core.services.parsing_job_service import ParsingJobService
 from src.api.dependencies.auth import get_current_user_payload
 from src.core.db.database import get_db
 

@@ -1,5 +1,6 @@
 import logging
 
+from aiokafka import AIOKafkaProducer
 from fastapi import FastAPI
 
 from api.config import api_settings
@@ -28,6 +29,19 @@ def create_app() -> FastAPI:
         version=api_settings.VERSION,
         root_path=api_settings.ROOT_PATH,
     )
+
+    @app.on_event("startup")
+    async def startup_event():
+        global producer
+        producer = AIOKafkaProducer(
+            bootstrap_servers=core_settings.KAFKA_BOOTSTRAP_SERVERS.get_secret_value())
+        await producer.start()
+
+    @app.on_event("shutdown")
+    async def shutdown_event():
+        global producer
+        if producer:
+            await producer.stop()
 
     # Registers global error handlers
     register_exception_handlers(app)

@@ -21,7 +21,7 @@ class Collection(Base):
         Enum(Status), default=Status.ACTIVE, nullable=False
     )
 
-    account_id: Mapped[uuid.UUID] = mapped_column(
+    account_id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("accounts.id")
     )
     account: Mapped[Account] = relationship(

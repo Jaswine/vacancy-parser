@@ -1,8 +1,8 @@
 import logging
 from uuid import UUID
 
-from core.db.models import ParsingJob
-from core.repositories.parsing_job_repository import ParsingJobRepository
+from src.core.db.models import ParsingJob
+from src.core.repositories.parsing_job_repository import ParsingJobRepository
 
 logger = logging.getLogger(__name__)
 

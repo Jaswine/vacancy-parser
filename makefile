@@ -30,7 +30,8 @@ setup: ## Setting up virtual environment
 
 install: ## Install dependencies
 	@echo "🚀  Installing dependencies"
-	pip install -r requirements.txt
+# 	pip install -r requirements.txt
+    poetry install
 	@echo "✅  Dependencies installed."
 
 
@@ -93,7 +94,7 @@ lint: ## Checking code f    ormatting for CI
 
 run-api:  ## Running api
 	@echo "🚀  Starting Api..."
-	@bash -c 'set -a; source .env; set +a; PYTHONPATH=src uv run uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload'
+	@bash -c 'set -a; source .env; set +a; PYTHONPATH=src uv run uvicorn src.api.main:app --host 0.0.0.0 --port 8100 --reload'
 
 
 # === DOCKER COMPOSE ДЛЯ РАЗРАБОТКИ ===
