@@ -31,6 +31,7 @@ def run_migrations():
     """
     Run migrations
     """
+    name = f''
     engine = create_engine(settings.DATABASE_URL_SYNC)
     with engine.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)

@@ -24,13 +24,14 @@ setup: ## Setting up virtual environment
 	@echo "🚀  Setting up virtual environment..."
 	python3 -m venv .venv
 	@echo "🚀  Installing pre-commit and activating git hooks..."
-	pip install pre-commit
-	run pre-commit install
+	. .venv/bin/activate && pip install pre-commit && pre-commit install
 	@echo "✅  Environment is set up. Activate with: source .venv/bin/activate"
 
 install: ## Install dependencies
 	@echo "🚀  Installing dependencies"
-	pip install -r requirements.txt
+	. .venv/bin/activate && python -m pip install --upgrade pip
+	. .venv/bin/activate && python -m pip install --upgrade poetry
+	. .venv/bin/activate && poetry install --no-interaction --no-ansi
 	@echo "✅  Dependencies installed."
 
 
@@ -80,7 +81,7 @@ format: ## Formatting code using ruff
 	python3 -m ruff check --fix .
 	@echo "✅  Formatting complete."
 
-lint: ## Checking code formatting for CI
+lint: ## Checking code f    ormatting for CI
 	@echo "🔄  Checking code formatting..."
 	pip install ruff
 	python3 -m ruff format --check .
@@ -93,7 +94,7 @@ lint: ## Checking code formatting for CI
 
 run-api:  ## Running api
 	@echo "🚀  Starting Api..."
-	@bash -c 'set -a; source .env; set +a; PYTHONPATH=src uv run uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload'
+	@bash -c 'set -a; source .env; set +a; PYTHONPATH=src uvicorn src.api.main:app --host 0.0.0.0 --port 8100 --reload'
 
 
 # === DOCKER COMPOSE ДЛЯ РАЗРАБОТКИ ===
