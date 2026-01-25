@@ -23,3 +23,7 @@ lxml==6.0.2
 playwright==1.57.0
 prometheus-client==0.24.1
 prometheus-fastapi-instrumentator==7.1.0
+
+# Tools
+python-jose==3.5.0
+passlib==1.7.4

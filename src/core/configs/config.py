@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import lru_cache
 
 from pydantic import SecretStr
@@ -9,9 +11,7 @@ class CoreSettings(BaseSettings):
     Application settings loaded from .env
     """
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore")
 
     # PostgreSQL
     DB_HOST: SecretStr
@@ -57,14 +57,18 @@ class CoreSettings(BaseSettings):
     RABBITMQ_HOST: str = "localhost"
     RABBITMQ_PORT: int = 5672
     RABBITMQ_USER: str = "guest"
-    RABBITMQ_PASSWORD: SecretStr | None = "guest"
+    RABBITMQ_PASSWORD: SecretStr  # guest
 
-    # RabbitMQ
-    RABBITMQ_DSN =  (f"amqp://"
-                     f"{RABBITMQ_USER}:"
-                     f"{RABBITMQ_PASSWORD.get_secret_value()}@"
-                     f"{RABBITMQ_HOST}:"
-                     f"{RABBITMQ_PORT}/")
+    @property
+    def RABBITMQ_DSN(self) -> str:
+        # Sync URL form Alembic
+        return (
+            f"amqp://"
+            f"{self.RABBITMQ_USER}:"
+            f"{self.RABBITMQ_PASSWORD.get_secret_value()}@"
+            f"{self.RABBITMQ_HOST}:"
+            f"{self.RABBITMQ_PORT}/"
+        )
 
     # JWT
     ALGORITHM: str = "HS256"
@@ -76,9 +80,9 @@ class CoreSettings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> CoreSettings:
-    return CoreSettings()  # type: ignore
+    return CoreSettings()
 
 
 settings = get_settings()

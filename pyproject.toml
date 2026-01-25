@@ -28,7 +28,11 @@ dependencies = [
     "playwright (>=1.57.0,<2.0.0)",
 
     "prometheus-client (>=0.24.1,<0.25.0)",
-    "prometheus-fastapi-instrumentator (>=7.1.0,<8.0.0)"
+    "prometheus-fastapi-instrumentator (>=7.1.0,<8.0.0)",
+
+    "python-jose (>=3.5.0,<4.0.0)",
+    "passlib (>=1.7.4,<2.0.0)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)"
 ]
 
 [dependency-groups]
@@ -79,7 +83,7 @@ exclude = '''(?x)( ^tests/ | ^.venv/ )'''
 explicit_package_bases = true
 mypy_path = "src"
 
-# MVP-friendly type checking: core safety without blocking development
+# Friendly type checking: core safety without blocking development
 warn_return_any = false
 warn_unused_ignores = true
 warn_redundant_casts = true
@@ -89,9 +93,6 @@ disallow_any_unimported = false
 no_implicit_optional = true
 strict_equality = true
 ignore_missing_imports = true
-
-# Disable common Telegram API issues (optional fields, union types)
-disable_error_code = ["union-attr", "arg-type"]
 
 [[tool.mypy.overrides]]
 module = "i18n.*"
